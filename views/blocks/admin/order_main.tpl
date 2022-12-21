@@ -7,7 +7,7 @@
       const resetButton = document.querySelector('input#resetShippingDateButton');
 
       if (shipButton) {
-        shipButton.addEventListener('mouseup', (event) => {
+        shipButton.addEventListener('mousedown', (event) => {
           event.preventDefault();
           const isConfirmed = confirm("[{oxmultilang ident="MONDU_WILL_CREATE_INVOICE"}]");
 
@@ -18,7 +18,7 @@
       }
 
       if (resetButton) {
-        resetButton.addEventListener('mouseup', (event) => {
+        resetButton.addEventListener('mousedown', (event) => {
           event.preventDefault();
           const isConfirmed = confirm("[{oxmultilang ident="MONDU_WILL_CANCEL_INVOICE"}]");
 
