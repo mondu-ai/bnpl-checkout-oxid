@@ -9,11 +9,11 @@ use OxidEsales\MonduPayment\Model\MonduOrder;
 
 class MonduInvoiceHandler
 {
-    protected MonduClient $client;
+    protected MonduClient $_client;
 
     public function __construct()
     {
-        $this->client = oxNew(MonduClient::class);
+        $this->_client = oxNew(MonduClient::class);
     }
 
     public function execute(Order $oOrder): bool
@@ -25,12 +25,17 @@ class MonduInvoiceHandler
             return false;
         }
 
-        $updatedOrder = $this->client->updateOrderExternalInfo(
+        $updatedOrder = $this->_client->updateOrderExternalInfo(
             $monduOrderUuid,
             ['external_reference_id' => $oOrder->getId()]
         );
 
-        $monduOrder = $this->client->getMonduOrder($updatedOrder['uuid']);
+        $monduOrder = $this->_client->getMonduOrder($updatedOrder['uuid']);
+
+        if (!$updatedOrder || !$monduOrder) {
+            return false;
+        }
+
         $this->storeMonduOrder($oOrder, $monduOrder);
         $this->clearSession();
 

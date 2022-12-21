@@ -9,28 +9,32 @@ use OxidEsales\MonduPayment\Core\Http\HttpRequest;
 
 class MonduClient
 {
-    private Config $config;
-    private HttpRequest $client;
-    private $logger = null;
+    private Config $_config;
+    private HttpRequest $_client;
+    private $_logger = null;
 
     public function __construct()
     {
-        $this->config = oxNew(Config::class);
-        $this->client = oxNew(
+        $this->_config = oxNew(Config::class);
+        $this->_client = oxNew(
             HttpRequest::class,
-            $this->config->getApiUrl(),
-            ['Content-Type: application/json', 'Api-Token: ' . $this->config->getApiToken()]
+            $this->_config->getApiUrl(),
+            [
+                'Content-Type: application/json',
+                'Api-Token: ' . $this->_config->getApiToken()
+            ]
         );
-        $this->logger = Registry::getLogger();
+
+        $this->_logger = Registry::getLogger();
     }
 
     public function createOrder($data = [])
     {
         try {
-            $order = $this->client->post('orders', $data);
+            $order = $this->_client->post('orders', $data);
             return $order['order'];
         } catch (StandardException $e) {
-            $this->logger->error('MonduClient::createOrder Failed with an exception message: ' . $e->getString());
+            $this->_logger->error('MonduClient::createOrder Failed with an exception message: ' . $e->getString());
             return null;
         }
     }
@@ -38,10 +42,10 @@ class MonduClient
     public function updateOrderExternalInfo($orderUuid, $data = [])
     {
         try {
-            $order = $this->client->post('orders/' . $orderUuid . '/update_external_info', $data);
+            $order = $this->_client->post('orders/' . $orderUuid . '/update_external_info', $data);
             return $order['order'];
         } catch (StandardException $e) {
-            $this->logger->error('MonduClient::updateOrderExternalInfo Failed with an exception message: ' . $e->getString());
+            $this->_logger->error('MonduClient::updateOrderExternalInfo Failed with an exception message: ' . $e->getString());
             return null;
         }
     }
@@ -49,10 +53,10 @@ class MonduClient
     public function getMonduOrder($orderUuid)
     {
         try {
-            $order = $this->client->get('orders/' . $orderUuid, []);
+            $order = $this->_client->get('orders/' . $orderUuid, []);
             return $order['order'];
         } catch (StandardException $e) {
-            $this->logger->error('MonduClient::getMonduOrder Failed with an exception message: ' . $e->getString());
+            $this->_logger->error('MonduClient::getMonduOrder Failed with an exception message: ' . $e->getString());
             return null;
         }
     }
@@ -60,10 +64,10 @@ class MonduClient
     public function createInvoice($orderUuid, $data)
     {
         try {
-            $invoice = $this->client->post('orders/' . $orderUuid . '/invoices', $data);
+            $invoice = $this->_client->post('orders/' . $orderUuid . '/invoices', $data);
             return $invoice['invoice'];
         } catch (StandardException $e) {
-            $this->logger->error('MonduClient::createInvoice Failed with an exception message: ' . $e->getString());
+            $this->_logger->error('MonduClient::createInvoice Failed with an exception message: ' . $e->getString());
             return null;
         }
     }
@@ -71,10 +75,10 @@ class MonduClient
     public function cancelInvoice($orderUuid, $invoiceUuid)
     {
         try {
-            $invoice = $this->client->post('orders/' . $orderUuid . '/invoices/' . $invoiceUuid . '/cancel', []);
+            $invoice = $this->_client->post('orders/' . $orderUuid . '/invoices/' . $invoiceUuid . '/cancel', []);
             return $invoice['invoice'];
         } catch (StandardException $e) {
-            $this->logger->error('MonduClient::cancelInvoice Failed with an exception message: ' . $e->getString());
+            $this->_logger->error('MonduClient::cancelInvoice Failed with an exception message: ' . $e->getString());
             return null;
         }
     }
@@ -82,10 +86,10 @@ class MonduClient
     public function getPaymentMethods()
     {
         try {
-            $paymentMethods = $this->client->get('payment_methods', []);
-            return $paymentMethods;
+            $paymentMethods = $this->_client->get('payment_methods', []);
+            return $paymentMethods['payment_methods'];
         } catch (StandardException $e) {
-            $this->logger->error('MonduClient::getPaymentMethods failed with an exception message: ' . $e->getString());
+            $this->_logger->error('MonduClient::getPaymentMethods failed with an exception message: ' . $e->getString());
             return null;
         }
     }
@@ -93,10 +97,10 @@ class MonduClient
     public function cancelOrder($orderUuid)
     {
         try {
-            $order = $this->client->post('orders/' . $orderUuid . '/cancel', []);
+            $order = $this->_client->post('orders/' . $orderUuid . '/cancel', []);
             return $order['order'];
         } catch (StandardException $e) {
-            $this->logger->error('MonduClient::cancelOrder failed with an exception message: ' . $e->getString());
+            $this->_logger->error('MonduClient::cancelOrder failed with an exception message: ' . $e->getString());
             return null;
         }
     }

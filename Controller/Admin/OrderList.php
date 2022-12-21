@@ -4,18 +4,20 @@ namespace OxidEsales\MonduPayment\Controller\Admin;
 
 use OxidEsales\MonduPayment\Core\Http\MonduClient;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\MonduPayment\Model\MonduOrder;
 
 class OrderList extends OrderList_parent
 {
-    protected MonduClient $client;
-    protected $_oOrder = null;
-    protected $_oMonduOrder = null;
+    protected MonduClient $_client;
+    protected ?Order $_oOrder;
+    protected ?MonduOrder $_oMonduOrder;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->client = oxNew(MonduClient::class);
+        $this->_client = oxNew(MonduClient::class);
         $this->_oOrder = $this->getOrder();
         $this->_oMonduOrder = $this->getMonduOrder();
     }
@@ -43,13 +45,12 @@ class OrderList extends OrderList_parent
     protected function cancelMonduOrder()
     {
         if ($this->_oMonduOrder) {
-            $response = $this->client->cancelOrder($this->_oMonduOrder->getFieldData('order_uuid'));
+            $response = $this->_client->cancelOrder($this->_oMonduOrder->getFieldData('order_uuid'));
 
             if ($response) {
                 $this->_oMonduOrder->cancelMonduOrder();
+                return true;
             }
-
-            return $response;
         }
 
         return false;
@@ -57,7 +58,7 @@ class OrderList extends OrderList_parent
 
     protected function getOrder()
     {
-        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $oOrder = oxNew(Order::class);
         $oxId = $this->getEditObjectId();
 
         if (isset($oxId) && $oxId != "-1") {
@@ -73,6 +74,8 @@ class OrderList extends OrderList_parent
         if ($this->isMonduPayment()) {
             return array_values($this->_oOrder->getMonduOrders()->getArray())[0];
         }
+
+        return null;
     }
 
     protected function isMonduPayment()

@@ -7,7 +7,7 @@
       const resetShippingForm = document.querySelector('form#resetorder');
 
       if (shipForm) {
-        shipForm.addEventListener('submit', () => {
+        shipForm.addEventListener('submit', (event) => {
           event.preventDefault();
           const isConfirmed = confirm("[{oxmultilang ident="MONDU_WILL_CREATE_INVOICE"}]");
 
@@ -18,7 +18,7 @@
       }
 
       if (resetShippingForm) {
-        resetShippingForm.addEventListener('submit', () => {
+        resetShippingForm.addEventListener('submit', (event) => {
           event.preventDefault();
           const isConfirmed = confirm("[{oxmultilang ident="MONDU_WILL_CANCEL_INVOICE"}]");
 

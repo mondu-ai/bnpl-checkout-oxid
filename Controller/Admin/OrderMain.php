@@ -4,10 +4,11 @@ namespace OxidEsales\MonduPayment\Controller\Admin;
 
 use OxidEsales\MonduPayment\Core\OrderShippingProcessor;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
+use OxidEsales\Eshop\Application\Model\Order;
 
 class OrderMain extends OrderMain_parent
 {
-    protected $_oOrder = null;
+    protected ?Order $_oOrder;
     protected OrderShippingProcessor $_monduShippingProcessor;
 
     public function __construct()
@@ -43,7 +44,7 @@ class OrderMain extends OrderMain_parent
 
     protected function getOrder()
     {
-        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $oOrder = oxNew(Order::class);
         $soxId = $this->getEditObjectId();
 
         if (isset($soxId) && $soxId != "-1") {

@@ -2,22 +2,21 @@
 
 namespace OxidEsales\MonduPayment\Core;
 
+use \OxidEsales\MonduPayment\Core\Config;
+
 class ViewConfig extends ViewConfig_parent
 {
-	protected $config = null;
+	protected $_config = null;
+
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->_config = oxNew(Config::class);
+	}
 
 	public function getWidgetUrl()
 	{
-		$url = $this->getMonduConfig()->getWidgetUrl();
-		return $url;
-	}
-
-	protected function getMonduConfig()
-	{
-		if (is_null($this->config)) {
-			$this->config = oxNew(\OxidEsales\MonduPayment\Core\Config::class);
-		}
-
-		return $this->config;
+		return $this->_config->getWidgetUrl();
 	}
 }

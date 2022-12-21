@@ -22,6 +22,7 @@ $aModule = array(
         \OxidEsales\Eshop\Application\Model\Order::class                       => \OxidEsales\MonduPayment\Model\Order::class,
 
         // Controllers
+        \OxidEsales\Eshop\Application\Controller\PaymentController::class      => \OxidEsales\MonduPayment\Controller\PaymentController::class,
         \OxidEsales\Eshop\Application\Controller\OrderController::class        => \OxidEsales\MonduPayment\Controller\OrderController::class,
         \OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class    => \OxidEsales\MonduPayment\Controller\Admin\OrderOverview::class,
         \OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class        => \OxidEsales\MonduPayment\Controller\Admin\OrderMain::class,

@@ -3,6 +3,8 @@
 namespace OxidEsales\MonduPayment\Core\Utils;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 
 class MonduHelper
 {
@@ -21,5 +23,16 @@ class MonduHelper
   public static function isMonduPayment($paymentId = '')
   {
     return stripos($paymentId, "oxmondu") !== false;
+  }
+
+  public static function isMonduModuleActive()
+  {
+    $container = ContainerFactory::getInstance()->getContainer();
+    $moduleActivationBridge = $container->get(ModuleActivationBridgeInterface::class);
+
+    return $moduleActivationBridge->isActive(
+      'oemondu',
+      Registry::getConfig()->getShopId()
+    );
   }
 }

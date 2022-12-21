@@ -10,22 +10,27 @@ use OxidEsales\Eshop\Application\Model\Order;
 
 class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-    protected MonduClient $client;
+    protected MonduClient $_client;
+    protected MonduOrderMapper $_orderMapper;
 
     public function __construct()
     {
         parent::__construct();
-        $this->client = oxNew(MonduClient::class);
+
+        $this->_client = oxNew(MonduClient::class);
+        $this->_orderMapper = oxNew(MonduOrderMapper::class);
     }
 
     public function createOrder()
     {
-        $orderMapper = $this->getMonduOrderMapper();
-        $orderMapper->setDeliveryAddress($this->getDelAddress());
-        $paymentMethod = $this->getPaymentMethod();
-        $orderData = $orderMapper->getMappedOrderData($paymentMethod);
+        $this->_orderMapper->setBasket($this->getBasket());
+        $this->_orderMapper->setDeliveryAddress($this->getDelAddress());
 
-        $response = $this->client->createOrder($orderData);
+        $paymentMethod = $this->getPaymentMethod();
+
+        $orderData = $this->_orderMapper->getMappedOrderData($paymentMethod);
+
+        $response = $this->_client->createOrder($orderData);
         $token = isset($response['uuid']) ? $response['uuid'] : 'error';
 
         if ($token !== 'error') {
@@ -38,13 +43,9 @@ class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\F
         exit();
     }
 
-    protected function getMonduOrderMapper()
+    protected function getBasket()
     {
-        if ($this->monduOrderMapper === null) {
-            $this->monduOrderMapper = oxNew(MonduOrderMapper::class, $basket);
-        }
-
-        return $this->monduOrderMapper;
+        return Registry::getSession()->getBasket();
     }
 
     protected function getDelAddress()

@@ -6,37 +6,27 @@ use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
 
 class MonduOrderMapper
 {
-    protected $basket = null;
-    protected $deliveryAddress = null;
-
-    public function __construct($basket = null)
-    {
-        $this->setBasket($basket);
-    }
+    protected $_basket = null;
+    protected $_deliveryAddress = null;
 
     public function getBasket()
     {
-        if ($this->basket === null) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
-            $this->basket = $session->getBasket();
-        }
-
-        return $this->basket;
+        return $this->_basket;
     }
 
     public function setBasket($basket)
     {
-        $this->basket = $basket;
+        $this->_basket = $basket;
     }
 
     public function getDeliveryAddress()
     {
-        return $this->deliveryAddress;
+        return $this->_deliveryAddress;
     }
 
     public function setDeliveryAddress($deliveryAddress)
     {
-        $this->deliveryAddress = $deliveryAddress;
+        $this->_deliveryAddress = $deliveryAddress;
     }
 
     protected function getBasketUser()

@@ -142,8 +142,8 @@ class HttpRequest
 
         $response = json_decode($response, true);
 
-        if (@$response['errors'] != null) {
-            throw new InvalidRequestException('[MONDU__ERROR]' . json_encode($response));
+        if (@$response['errors'] != null || @$response['error'] != null) {
+            throw new InvalidRequestException('[MONDU__ERROR] ' . json_encode($response));
         }
 
         return $response;
