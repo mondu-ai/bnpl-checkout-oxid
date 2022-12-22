@@ -133,17 +133,18 @@ class HttpRequest
         curl_setopt($this->curl, CURLOPT_TIMEOUT, 10);
 
         $response = curl_exec($this->curl);
+        $httpCode = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
 
         curl_close($this->curl);
 
-        if (!$response) {
-            throw new InvalidRequestException('[MONDU__ERROR] Request can not be processed.');
+        if (!$response && $httpCode > 308) {
+            throw new InvalidRequestException('[MONDU__ERROR] Request can not be processed.', $data);
         }
 
         $response = json_decode($response, true);
 
         if (@$response['errors'] != null || @$response['error'] != null) {
-            throw new InvalidRequestException('[MONDU__ERROR] ' . json_encode($response));
+            throw new InvalidRequestException('[MONDU__ERROR] ' . json_encode($response), $data, $response);
         }
 
         return $response;

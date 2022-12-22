@@ -36,6 +36,44 @@ class Config
         return $this->getParameter('oemonduApiKey');
     }
 
+    public function getModuleName()
+    {
+        $moduleData = $this->getModuleData();
+
+        if ($moduleData) {
+            return 'OXID ' . $moduleData['id'];
+        }
+
+        return '';
+    }
+
+    public function getModuleVersion()
+    {
+        $moduleData = $this->getModuleData();
+
+        if ($moduleData) {
+            return $moduleData['version'];
+        }
+
+        return '';
+    }
+
+    public function getShopVersion()
+    {
+        return oxNew(\OxidEsales\EshopCommunity\Core\ShopVersion::class)->getVersion();
+    }
+
+    protected function getModuleData()
+    {
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+
+        if ($module->load('oemondu')) {
+            return $module->getModuleData();
+        }
+
+        return null;
+    }
+
     protected function getParameter($paramName)
     {
         return $this->getConfig()->getConfigParam($paramName);
