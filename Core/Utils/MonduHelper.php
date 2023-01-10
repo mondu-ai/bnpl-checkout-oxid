@@ -35,4 +35,9 @@ class MonduHelper
       Registry::getConfig()->getShopId()
     );
   }
+
+  public static function camelToSnakeCase($string)
+  {
+    return strtoupper(preg_replace("/([a-z])([A-Z])/", "$1_$2", $string));
+  }
 }

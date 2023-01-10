@@ -38,13 +38,7 @@ class Config
 
     public function getModuleName()
     {
-        $moduleData = $this->getModuleData();
-
-        if ($moduleData) {
-            return 'OXID ' . $moduleData['id'];
-        }
-
-        return '';
+        return 'oxid';
     }
 
     public function getModuleVersion()

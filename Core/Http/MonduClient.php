@@ -99,9 +99,9 @@ class MonduClient
                 'version' => $this->_config->getModuleVersion(),
                 'language_version' => 'PHP ' . phpversion(),
                 'shop_version' => $this->_config->getShopVersion(),
-                'origin_event' => debug_backtrace()[1]['function'],
+                'origin_event' => MonduHelper::camelToSnakeCase(debug_backtrace()[1]['function']),
                 'request_body' => $e->getRequestBody(),
-                'response_status' => $e->getResponseStatus(),
+                'response_status' => (string) $e->getResponseStatus(),
                 'response_body' => $e->getResponseBody(),
                 'error_trace' => $e->getString()
             ]);
