@@ -1,0 +1,19 @@
+{
+    "name": "mondu/bnpl-checkout-oxid",
+    "description": "Mondu payment method for the OXID eShop.",
+    "type": "oxideshop-module",
+    "keywords": [
+        "oxid",
+        "modules",
+        "eShop"
+    ],
+    "homepage": "https://www.oxid-esales.com/en/home.html",
+    "require": {
+        "php": "^7.1 || ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OxidEsales\\MonduPayment\\": "./"
+        }
+    }
+}
