@@ -13,7 +13,7 @@ class MonduInvoiceMapper
     return MonduHelper::removeEmptyElementsFromArray([
       'external_reference_id' => $order->getId(),
       'invoice_url' => 'http://localhost',
-      'gross_amount_cents' => round($order->getFieldData('oxtotalbrutsum') * 100),
+      'gross_amount_cents' => round($order->getFieldData('oxtotalordersum') * 100),
       'line_items' => $invoiceLineItems
     ]);
   }

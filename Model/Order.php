@@ -43,4 +43,15 @@ class Order extends Order_parent
     {
         return MonduHelper::isMonduPayment($this->getFieldData('oxpaymenttype'));
     }
+
+    public function deleteAllArticles()
+    {
+        $orderArticles = $this->getOrderArticles();
+
+        foreach ($orderArticles as $orderArticle) {
+            $orderArticle->delete();
+        }
+
+        $this->recalculateOrder();
+    }
 }
