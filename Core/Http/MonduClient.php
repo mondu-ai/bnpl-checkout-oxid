@@ -76,6 +76,12 @@ class MonduClient
         return $order['order'] ?? null;
     }
 
+    public function adjustOrder($orderUuid, $data = [])
+    {
+        $order = $this->sendRequest('POST', 'orders/' . $orderUuid . '/adjust', $data);
+        return $order['order'] ?? null;
+    }
+
     public function logEvent($eventData)
     {
         try {

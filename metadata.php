@@ -27,6 +27,7 @@ $aModule = array(
         \OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class    => \OxidEsales\MonduPayment\Controller\Admin\OrderOverview::class,
         \OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class        => \OxidEsales\MonduPayment\Controller\Admin\OrderMain::class,
         \OxidEsales\Eshop\Application\Controller\Admin\OrderList::class        => \OxidEsales\MonduPayment\Controller\Admin\OrderList::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\OrderArticle::class     => \OxidEsales\MonduPayment\Controller\Admin\OrderArticle::class,
 
         \OxidEsales\Eshop\Core\ViewConfig::class                               => \OxidEsales\MonduPayment\Core\ViewConfig::class,
     ),

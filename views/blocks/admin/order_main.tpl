@@ -3,8 +3,13 @@
 [{if $oView->isMonduPayment()}]
   [{capture assign="orderShipping"}]
     window.onload = function () {
+      const updatePaymentMethod = document.querySelector('select[name="setPayment"]');
       const shipButton = document.querySelector('input#shippNowButton');
       const resetButton = document.querySelector('input#resetShippingDateButton');
+
+      if(updatePaymentMethod) {
+        updatePaymentMethod.disabled = true;
+      }
 
       if (shipButton) {
         shipButton.addEventListener('mousedown', (event) => {
