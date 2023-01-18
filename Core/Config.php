@@ -2,6 +2,9 @@
 
 namespace OxidEsales\MonduPayment\Core;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
+
 class Config
 {
     protected const API_URL = 'https://api.mondu.ai/api/v1';
@@ -57,6 +60,16 @@ class Config
         return oxNew(\OxidEsales\EshopCommunity\Core\ShopVersion::class)->getVersion();
     }
 
+    public function getWebhooksSecret()
+    {
+        return $this->getParameter('oemonduWebhookSecret');
+    }
+
+    public function setWebhooksSecret($webhookSecret)
+    {
+        $this->setParameter('oemonduWebhookSecret', $webhookSecret);
+    }
+
     protected function getModuleData()
     {
         $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
@@ -71,6 +84,15 @@ class Config
     protected function getParameter($paramName)
     {
         return $this->getConfig()->getConfigParam($paramName);
+    }
+
+    protected function setParameter($paramName, $paramValue)
+    {
+        $moduleSettingBridge = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleSettingBridgeInterface::class);
+
+        $moduleSettingBridge->save($paramName, $paramValue, 'oemondu');
     }
 
     protected function getConfig()

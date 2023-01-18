@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        public: false
+        autowire: true
+
+    OxidEsales\MonduPayment\Core\Http\MonduClient:
+        public: true
+
+    OxidEsales\MonduPayment\Event\SettingChangedSubscriber:
+        tags: ['kernel.event_subscriber']
+
+    request:
+        public: true
+        class: Symfony\Component\HttpFoundation\Request
+        factory: ['Symfony\Component\HttpFoundation\Request', 'createFromGlobals']

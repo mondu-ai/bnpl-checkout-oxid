@@ -82,6 +82,19 @@ class MonduClient
         return $order['order'] ?? null;
     }
 
+    public function getWebhooksSecret()
+    {
+        $response = $this->sendRequest('GET', 'webhooks/keys');
+        $this->_config->setWebhooksSecret($response['webhook_secret'] ?? '');
+        return $response['webhook_secret'];
+    }
+
+    public function registerWebhook($webhookParams)
+    {
+        $response = $this->sendRequest('POST', 'webhooks/', $webhookParams);
+        return $response;
+    }
+
     public function logEvent($eventData)
     {
         try {
@@ -114,7 +127,10 @@ class MonduClient
 
             $this->logEvent($logParams);
 
-            return null;
+            return [
+                'status' => $e->getResponseStatus(),
+                'body' => $e->getResponseBody()
+            ];
         }
     }
 }

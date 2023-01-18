@@ -45,12 +45,7 @@ class OrderList extends OrderList_parent
     protected function cancelMonduOrder()
     {
         if ($this->_oMonduOrder) {
-            $response = $this->_client->cancelOrder($this->_oMonduOrder->getFieldData('order_uuid'));
-
-            if ($response) {
-                $this->_oMonduOrder->cancelMonduOrder();
-                return true;
-            }
+            return $this->_client->cancelOrder($this->_oMonduOrder->getFieldData('order_uuid'));
         }
 
         return false;
