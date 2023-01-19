@@ -3,7 +3,7 @@
 namespace OxidEsales\MonduPayment\Core\Exception;
 
 use OxidEsales\Eshop\Core\Exception\StandardException;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\MonduPayment\Core\Logger;
 
 class InvalidRequestException extends StandardException
 {
@@ -12,7 +12,7 @@ class InvalidRequestException extends StandardException
 
     public function __construct($message, $requestBody = null, $response = null)
     {
-        $logger = Registry::getLogger();
+        $logger = oxNew(Logger::class)->getLogger();
         $logger->error($message);
 
         $this->_requestBody = $requestBody;
