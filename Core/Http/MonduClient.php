@@ -3,11 +3,11 @@
 namespace OxidEsales\MonduPayment\Core\Http;
 
 use OxidEsales\MonduPayment\Core\Config;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\MonduPayment\Core\Exception\InvalidRequestException;
 use OxidEsales\MonduPayment\Core\Http\HttpRequest;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
+use OxidEsales\MonduPayment\Core\Logger;
 
 class MonduClient
 {
@@ -20,7 +20,7 @@ class MonduClient
     {
         $this->_config = oxNew(Config::class);
         $this->_baseUrl = $this->_config->getApiUrl();
-        $this->_logger = Registry::getLogger();
+        $this->_logger = oxNew(Logger::class)->getLogger();
 
         $this->_client = oxNew(
             HttpRequest::class,

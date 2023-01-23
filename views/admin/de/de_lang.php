@@ -7,6 +7,7 @@ $aLang = array(
     'SHOP_MODULE_GROUP_oemondu_banners'  => 'Moduleinstellungen',
     'SHOP_MODULE_oemonduApiKey'          => 'API Key',
     'SHOP_MODULE_oemonduSandboxMode'     => 'Sandbox mode',
+    'SHOP_MODULE_oemonduErrorLogging'    => 'Mondu Logging aktivieren',
 
     'INVALID_API_KEY'              => 'Ungültiger Mondu API Key.',
     'MONDU_WILL_CREATE_INVOICE'    => 'Beim Versand dieser Bestellung wird eine Rechnung in Mondu erstellt. Möchten Sie fortfahren?',

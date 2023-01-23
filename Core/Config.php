@@ -70,6 +70,11 @@ class Config
         $this->setParameter('oemonduWebhookSecret', $webhookSecret);
     }
 
+    public function isLoggingEnabled()
+    {
+        return $this->getParameter('oemonduErrorLogging');
+    }
+
     protected function getModuleData()
     {
         $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
