@@ -16,23 +16,25 @@ $aModule = array(
     'email'        => 'contact@mondu.ai',
     'extend' => array(
         // Models
-        \OxidEsales\Eshop\Application\Model\Country::class                     => \OxidEsales\MonduPayment\Model\Country::class,
-        \OxidEsales\Eshop\Application\Model\Payment::class                     => \OxidEsales\MonduPayment\Model\MonduPayment::class,
-        \OxidEsales\Eshop\Application\Model\PaymentGateway::class              => \OxidEsales\MonduPayment\Model\PaymentGateway::class,
-        \OxidEsales\Eshop\Application\Model\Order::class                       => \OxidEsales\MonduPayment\Model\Order::class,
+        \OxidEsales\Eshop\Application\Model\Country::class                        => \OxidEsales\MonduPayment\Model\Country::class,
+        \OxidEsales\Eshop\Application\Model\Payment::class                        => \OxidEsales\MonduPayment\Model\MonduPayment::class,
+        \OxidEsales\Eshop\Application\Model\PaymentGateway::class                 => \OxidEsales\MonduPayment\Model\PaymentGateway::class,
+        \OxidEsales\Eshop\Application\Model\Order::class                          => \OxidEsales\MonduPayment\Model\Order::class,
 
         // Controllers
-        \OxidEsales\Eshop\Application\Controller\PaymentController::class      => \OxidEsales\MonduPayment\Controller\PaymentController::class,
-        \OxidEsales\Eshop\Application\Controller\OrderController::class        => \OxidEsales\MonduPayment\Controller\OrderController::class,
-        \OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class    => \OxidEsales\MonduPayment\Controller\Admin\OrderOverview::class,
-        \OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class        => \OxidEsales\MonduPayment\Controller\Admin\OrderMain::class,
-        \OxidEsales\Eshop\Application\Controller\Admin\OrderList::class        => \OxidEsales\MonduPayment\Controller\Admin\OrderList::class,
-        \OxidEsales\Eshop\Application\Controller\Admin\OrderArticle::class     => \OxidEsales\MonduPayment\Controller\Admin\OrderArticle::class,
+        \OxidEsales\Eshop\Application\Controller\PaymentController::class         => \OxidEsales\MonduPayment\Controller\PaymentController::class,
+        \OxidEsales\Eshop\Application\Controller\OrderController::class           => \OxidEsales\MonduPayment\Controller\OrderController::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class       => \OxidEsales\MonduPayment\Controller\Admin\OrderOverview::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\OrderMain::class           => \OxidEsales\MonduPayment\Controller\Admin\OrderMain::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\OrderList::class           => \OxidEsales\MonduPayment\Controller\Admin\OrderList::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\OrderArticle::class        => \OxidEsales\MonduPayment\Controller\Admin\OrderArticle::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\ModuleConfiguration::class => \OxidEsales\MonduPayment\Controller\Admin\ModuleConfiguration::class,
 
-        \OxidEsales\Eshop\Core\ViewConfig::class                               => \OxidEsales\MonduPayment\Core\ViewConfig::class,
+        \OxidEsales\Eshop\Core\ViewConfig::class                                  => \OxidEsales\MonduPayment\Core\ViewConfig::class,
     ),
     'controllers' => array(
         'oemonducheckout' => \OxidEsales\MonduPayment\Controller\MonduCheckoutController::class,
+        'oemonduwebhooks' => \OxidEsales\MonduPayment\Controller\MonduWebhooksController::class
     ),
     'blocks' => array(
         array(
@@ -57,6 +59,7 @@ $aModule = array(
     ),
     'settings' => array(
         array('group' => 'oemondu_banners', 'name' => 'oemonduApiKey', 'type' => 'str', 'value' => ''),
-        array('group' => 'oemondu_banners', 'name' => 'oemonduSandboxMode', 'type' => 'bool', 'value' => 'false')
+        array('group' => 'oemondu_banners', 'name' => 'oemonduSandboxMode', 'type' => 'bool', 'value' => 'false'),
+        array('name'  => 'oemonduWebhookSecret', 'type' => 'str', 'value' => '')
     )
 );

@@ -63,13 +63,8 @@ class OrderShippingProcessor
 
         if ($monduInvoice) {
             $response = $this->client->cancelInvoice($this->_oMonduOrder->getFieldData('order_uuid'), $monduInvoice->getFieldData('invoice_uuid'));
-
-            if ($response) {
-                $monduInvoice->cancelMonduInvoice();
-            }
+            return $response;
         }
-
-        return $response;
     }
 
     protected function storeMonduInvoice($invoice)

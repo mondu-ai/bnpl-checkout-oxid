@@ -24,13 +24,20 @@ class MonduOrder extends BaseModel
         $this->save();
     }
 
-    //TODO: handle via webhook
-    public function cancelMonduOrder()
+    public function updateOrderState($state)
     {
         if ($this->exists()) {
-            $this->oemondu_orders__order_state->rawValue = 'canceled';
+            $this->oemondu_orders__order_state->rawValue = $state;
             $this->save();
         }
+    }
+
+    public function loadByOrderUuid($orderUuid)
+    {
+        $query = $this->buildSelectString(array('order_uuid' => $orderUuid));
+        $this->_isLoaded = $this->assignRecord($query);
+
+        return $this->_isLoaded;
     }
 
     protected function _mapMonduOrderData($order)

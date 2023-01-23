@@ -24,13 +24,20 @@ class MonduInvoice extends BaseModel
         $this->save();
     }
 
-    //TODO: handle via webhook
-    public function cancelMonduInvoice()
+    public function updateInvoiceState($state)
     {
         if ($this->exists()) {
-            $this->oemondu_invoices__invoice_state->rawValue = 'canceled';
+            $this->oemondu_invoices__invoice_state->rawValue = $state;
             $this->save();
         }
+    }
+
+    public function loadByInvoiceUuid($invoiceUuid)
+    {
+        $query = $this->buildSelectString(array('invoice_uuid' => $invoiceUuid));
+        $this->_isLoaded = $this->assignRecord($query);
+
+        return $this->_isLoaded;
     }
 
     protected function _mapMonduInvoiceData($invoice)
