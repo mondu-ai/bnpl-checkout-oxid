@@ -7,14 +7,14 @@ $aLang = array(
     'SHOP_MODULE_GROUP_oemondu_banners'  => 'Module-instellingen',
     'SHOP_MODULE_oemonduApiKey'          => 'API Key',
     'SHOP_MODULE_oemonduSandboxMode'     => 'Sandbox mode',
-    'SHOP_MODULE_oemonduErrorLogging'    => 'Activeer Mondu-loggen',
+    'SHOP_MODULE_oemonduErrorLogging'    => 'Activeer Mondu logging',
 
-    'INVALID_API_KEY'              => 'Ongeldige Mondu API-sleutel.',
-    'MONDU_WILL_CREATE_INVOICE'    => 'Als deze bestelling wordt verzonden, wordt er een factuur in Mondu gemaakt. Wil je doorgaan?',
-    'MONDU_WILL_CANCEL_INVOICE'    => 'Als u de verzending van de bestelling annuleert, wordt een factuur in Mondu geannuleerd. Deze actie kan niet worden teruggedraaid. Weet je zeker dat je verder wilt gaan?',
+    'INVALID_API_KEY'              => 'Ongeldige Mondu API Key.',
+    'MONDU_WILL_CREATE_INVOICE'    => 'Als deze bestelling wordt verzonden, zal er een factuur aangemaakt worden in het Mondu-portal. Wil je doorgaan?',
+    'MONDU_WILL_CANCEL_INVOICE'    => 'Als je de verzending van de bestelling annuleert, zal tevens de factuur in het Mondu-portal geannuleerd worden. Deze actie kan je niet terugdraaien. Weet je zeker dat je verder wilt gaan?',
     'MONDU_CREATE_INVOICE_ERROR'   => 'Deze bestelling kan niet door Mondu worden gefactureerd.',
-    'MONDU_CANCEL_INVOICE_ERROR'   => 'Factuur van deze bestelling kan niet door Mondu worden geannuleerd.',
-    'MONDU_CANCEL_ORDER_ERROR'     => 'Bestelling kan niet door Mondu worden geannuleerd.',
-    'MONDU_ADJUST_ORDER_ERROR'     => 'Bestelling kan niet worden aangepast door Mondu.',
-    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook kan niet door Mondu worden gemaakt.'
+    'MONDU_CANCEL_INVOICE_ERROR'   => 'De factuur van deze bestelling kan niet door Mondu worden geannuleerd.',
+    'MONDU_CANCEL_ORDER_ERROR'     => 'Deze bestelling kan niet door Mondu worden geannuleerd.',
+    'MONDU_ADJUST_ORDER_ERROR'     => 'Deze bestelling kan niet worden aangepast door Mondu.',
+    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook kan niet door Mondu worden aangemaakt.'
 );
