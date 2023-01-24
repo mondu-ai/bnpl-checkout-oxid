@@ -49,7 +49,7 @@ $aModule = array(
         ),
         array(
             'template' => 'order_overview.tpl',
-            'block'    => 'admin_order_overview_billingaddress',
+            'block'    => 'admin_order_overview_checkout',
             'file'     => 'views/blocks/admin/order_overview.tpl',
         ),
         array(
