@@ -38,6 +38,11 @@ $aModule = array(
     ),
     'blocks' => array(
         array(
+            'template' => 'page/checkout/payment.tpl',
+            'block'    => 'select_payment',
+            'file'     => '/views/blocks/page/checkout/paymentselector.tpl'
+        ),
+        array(
             'template' => 'page/checkout/order.tpl',
             'block'    => 'checkout_order_btn_confirm_bottom',
             'file'     => '/views/blocks/widget/mondu_widget.tpl'

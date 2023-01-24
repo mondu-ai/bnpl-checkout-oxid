@@ -3,6 +3,7 @@
 namespace OxidEsales\MonduPayment\Core;
 
 use \OxidEsales\MonduPayment\Core\Config;
+use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
 
 class ViewConfig extends ViewConfig_parent
 {
@@ -18,5 +19,10 @@ class ViewConfig extends ViewConfig_parent
 	public function getWidgetUrl()
 	{
 		return $this->_config->getWidgetUrl();
+	}
+
+	public function isMonduPayment($paymentId)
+	{
+		return MonduHelper::isMonduPayment($paymentId);
 	}
 }
