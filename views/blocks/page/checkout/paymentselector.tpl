@@ -7,7 +7,7 @@
             </dt>
             <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
                 <div class="monduPaymentLogo" style="margin: 12px 0">
-                    <img src="https://checkout.mondu.ai/logo.svg">
+                    <img src="[{$oViewConf->getModuleUrl('oemondu','out/src/images/plugin.png')}]">
                 </div>
                 [{if $paymentmethod->getPrice() && $paymentmethod->oxpayments__oxaddsum->rawValue != 0}]
                     [{assign var="oPaymentPrice" value=$paymentmethod->getPrice() }]
