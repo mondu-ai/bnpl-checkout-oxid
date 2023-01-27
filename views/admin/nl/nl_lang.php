@@ -16,5 +16,7 @@ $aLang = array(
     'MONDU_CANCEL_INVOICE_ERROR'   => 'De factuur van deze bestelling kan niet door Mondu worden geannuleerd.',
     'MONDU_CANCEL_ORDER_ERROR'     => 'Deze bestelling kan niet door Mondu worden geannuleerd.',
     'MONDU_ADJUST_ORDER_ERROR'     => 'Deze bestelling kan niet worden aangepast door Mondu.',
-    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook kan niet door Mondu worden aangemaakt.'
+    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook kan niet door Mondu worden aangemaakt.',
+
+    'ORDER_OVERVIEW_AUTHORIZED_NET_TERM' => 'Geautoriseerde Netto termijn'
 );

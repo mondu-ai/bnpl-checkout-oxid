@@ -38,13 +38,18 @@ $aModule = array(
     ),
     'blocks' => array(
         array(
+            'template' => 'page/checkout/payment.tpl',
+            'block'    => 'select_payment',
+            'file'     => '/views/blocks/page/checkout/paymentselector.tpl'
+        ),
+        array(
             'template' => 'page/checkout/order.tpl',
             'block'    => 'checkout_order_btn_confirm_bottom',
             'file'     => '/views/blocks/widget/mondu_widget.tpl'
         ),
         array(
             'template' => 'order_overview.tpl',
-            'block'    => 'admin_order_overview_billingaddress',
+            'block'    => 'admin_order_overview_checkout',
             'file'     => 'views/blocks/admin/order_overview.tpl',
         ),
         array(

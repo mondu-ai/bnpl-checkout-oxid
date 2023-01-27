@@ -16,5 +16,7 @@ $aLang = array(
     'MONDU_CANCEL_INVOICE_ERROR'   => 'The invoice of this order can not be canceled by Mondu.',
     'MONDU_CANCEL_ORDER_ERROR'     => 'This order can not be canceled by Mondu.',
     'MONDU_ADJUST_ORDER_ERROR'     => 'This order can not be adjusted by Mondu.',
-    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook can not be created by Mondu.'
+    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook can not be created by Mondu.',
+
+    'ORDER_OVERVIEW_AUTHORIZED_NET_TERM' => 'Authorized Net term'
 );

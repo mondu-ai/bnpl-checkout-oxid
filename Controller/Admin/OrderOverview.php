@@ -19,6 +19,16 @@ class OrderOverview extends OrderOverview_parent
         $this->_monduShippingProcessor = oxNew(OrderShippingProcessor::class, $this->_oOrder);
     }
 
+    public function render()
+    {
+        if ($this->isMonduPayment()) {
+            $monduOrder = array_values($this->_oOrder->getMonduOrders()->getArray())[0];
+            $this->_aViewData["oemonduAuthorizedNetTerm"] = $monduOrder ? $monduOrder->getFieldData('authorized_net_term') : null;
+        }
+
+        return parent::render();
+    }
+
     public function sendorder()
     {
         if ($this->isMonduPayment() && !$this->_monduShippingProcessor->shipMonduOrder()) {

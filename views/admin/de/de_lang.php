@@ -16,5 +16,7 @@ $aLang = array(
     'MONDU_CANCEL_INVOICE_ERROR'   => 'Die Rechnung dieser Bestellung kann durch Mondu nicht storniert werden.',
     'MONDU_CANCEL_ORDER_ERROR'     => 'Die Bestellung kann durch Mondu nicht storniert werden.',
     'MONDU_ADJUST_ORDER_ERROR'     => 'Die Bestellung kann durch Mondu nicht angepasst werden.',
-    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook kann nicht durch Mondu erstellt werden.'
+    'MONDU_REGISTER_WEBHOOK_ERROR' => 'Webhook kann nicht durch Mondu erstellt werden.',
+
+    'ORDER_OVERVIEW_AUTHORIZED_NET_TERM' => 'Autorisierte Netto Laufzeit'
 );
