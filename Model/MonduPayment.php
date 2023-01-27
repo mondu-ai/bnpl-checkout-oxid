@@ -23,6 +23,10 @@ class MonduPayment extends MonduPayment_parent
                     'name' => 'Mondu | Invoice - Pay later by bank transfer',
                     'description' => 'Information on the processing of your personal data by Mondu GmbH can be found <a href=https://www.mondu.ai/de/datenschutzgrundverordnung-kaeufer/ target="_blank">here</a>.',
                 ],
+                'nl' => [
+                    'name' => 'Mondu | Factuur - Aankoop op rekening - nu kopen, later betalen',
+                    'description' => 'Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=https://www.mondu.ai/nl/information-nach-art-13-datenschutzgrundverordnung-fur-kaufer/ target="_blank">hier</a>.',
+                ]
             ],
         ],
         self::MONDU_DIRECT_DEBIT => [
@@ -39,6 +43,10 @@ class MonduPayment extends MonduPayment_parent
                     'name' => 'Mondu | SEPA - Pay later by direct debit',
                     'description' => 'Information on the processing of your personal data by Mondu GmbH can be found <a href=https://www.mondu.ai/de/datenschutzgrundverordnung-kaeufer/ target="_blank">here</a>.',
                 ],
+                'nl' => [
+                    'name' => 'Mondu | SEPA automatische incasso - nu kopen, later betalen',
+                    'description' => 'Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=https://www.mondu.ai/nl/information-nach-art-13-datenschutzgrundverordnung-fur-kaufer/ target="_blank">hier</a>.',
+                ]
             ],
         ],
         self::MONDU_INSTALLMENT => [
@@ -55,6 +63,10 @@ class MonduPayment extends MonduPayment_parent
                     'name' => 'Mondu | Split payments - Pay conveniently in instalments by direct debit',
                     'description' => 'Information on the processing of your personal data by Mondu GmbH can be found <a href=https://www.mondu.ai/de/datenschutzgrundverordnung-kaeufer/ target="_blank">here</a>.',
                 ],
+                'nl' => [
+                    'name' => 'Mondu | Gespreid betalen - Betaal gemakkelijk in termijnen via automatische incasso',
+                    'description' => 'Informatie over de verwerking van uw persoonsgegevens door Mondu GmbH vindt u <a href=https://www.mondu.ai/nl/information-nach-art-13-datenschutzgrundverordnung-fur-kaufer/ target="_blank">hier</a>.',
+                ]
             ],
         ]
     ];
