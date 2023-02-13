@@ -13,6 +13,7 @@ class Config
     protected const SANDBOX_WIDGET_URL = 'https://checkout.demo.mondu.ai/widget.js';
     protected const LOCAL_API_URL = 'http://localhost:3000/api/v1';
     protected const LOCAL_WIDGET_URL = 'http://localhost:3002/widget.js';
+    protected const LOGO_URL = 'https://checkout.mondu.ai/logo.svg';
 
     public function isSandbox()
     {
@@ -68,6 +69,11 @@ class Config
     public function setWebhooksSecret($webhookSecret)
     {
         $this->setParameter('oemonduWebhookSecret', $webhookSecret);
+    }
+
+    public function getMonduLogo()
+    {
+        return self::LOGO_URL;
     }
 
     public function isLoggingEnabled()
