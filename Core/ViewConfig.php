@@ -21,6 +21,11 @@ class ViewConfig extends ViewConfig_parent
 		return $this->_config->getWidgetUrl();
 	}
 
+	public function getMonduLogo()
+	{
+		return $this->_config->getMonduLogo();
+	}
+
 	public function isMonduPayment($paymentId)
 	{
 		return MonduHelper::isMonduPayment($paymentId);
