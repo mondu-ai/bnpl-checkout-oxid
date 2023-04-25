@@ -3,7 +3,10 @@
     "description": "Mondu payment method for the OXID eShop.",
     "type": "oxideshop-module",
     "version": "1.0.0",
-    "license": "OSL-3.0",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
     "keywords": [
         "oxid",
         "modules",
