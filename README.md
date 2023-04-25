@@ -29,7 +29,7 @@ composer config repositories.mondu/bnpl-checkout-oxid path source/modules/mondu/
 composer require mondu/bnpl-checkout-oxid
 ```
 
-##### Module setup
+### Module configuration
 
 1. After successful installation, Mondu BNPL module should be visible in admin dashboard (_Admin Dashboard -> Extensions -> Modules_)
 2. Navigate to Mondu module
@@ -38,18 +38,21 @@ composer require mondu/bnpl-checkout-oxid
     > NOTE: On module activation, three new payment methods (Mondu Invoice, Mondu SEPA and Mondu Installment) are added and activated
 
 4. Navigate to Mondu module settings page (_Extensions -> Modules -> Mondu -> Settings tab_)
-   4.1. Enter API key provided by Mondu
-   4.2. Check 'Sandbox mode' checkbox for testing in sandbox environment
-   4.3. Activate Mondu logging (if you want to allow logging of all errors to oemondu.log file, located inside your log directory)
+
+```
+    1. Enter API key provided by Mondu
+    2. Check 'Sandbox mode' checkbox for testing in sandbox environment
+    3. Activate Mondu logging (if you want to allow logging of all errors to oemondu.log file, located inside your log directory)
+```
 
 5. Save settings
 
-    > NOTE: In case any issues happen during module configuration, a proper error message will be shown.\*\*
+    > NOTE: In case any issues happen during module configuration, a proper error message will be shown.
 
-6. Assign desired countries to Mondu Payment methods (_Admin Dashboard -> Shop Settings -> Payment Methods -> <desired Mondu payment method> -> Country -> Assign Countries_)
+6. Assign desired countries to Mondu Payment methods (_Admin Dashboard -> Shop Settings -> Payment Methods -> `<desired Mondu payment method>` -> Country -> Assign Countries_)
 
 > NOTE: In case no country is assigned to payment method, it will not be visible in checkout flow
 
-7. Assign desired payment methods to Shop shipping methods (_Admin Dashboard -> Shop Settings -> Shipping Methods -> <desired shipping method> -> Payment -> Assign Payment Methods_)
+7. Assign desired payment methods to Shop shipping methods (_Admin Dashboard -> Shop Settings -> Shipping Methods -> `<desired shipping method>` -> Payment -> Assign Payment Methods_)
 
 > NOTE: In case payment method is not assigned to any shipping method, it will not be visible in checkout flow
