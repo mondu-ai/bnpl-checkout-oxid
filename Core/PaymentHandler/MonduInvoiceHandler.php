@@ -27,7 +27,7 @@ class MonduInvoiceHandler
 
         $updatedOrder = $this->_client->updateOrderExternalInfo(
             $monduOrderUuid,
-            ['external_reference_id' => $oOrder->getId()]
+            ['external_reference_id' => $oOrder->getFieldData('oxorder__oxordernr') ? (string) $oOrder->getFieldData('oxorder__oxordernr') : $oOrder->getId()]
         );
 
         $monduOrder = $this->_client->getMonduOrder($updatedOrder['uuid']);
@@ -36,6 +36,7 @@ class MonduInvoiceHandler
             return false;
         }
 
+        $session->setVariable('mondu_created_order_uuid', $monduOrderUuid);
         $this->storeMonduOrder($oOrder, $monduOrder);
         $this->clearSession();
 
