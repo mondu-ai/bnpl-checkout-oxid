@@ -91,26 +91,17 @@ class Order extends Order_parent
     public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         $result = parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
-        $session = Registry::getSession();
-        $monduOrderUuid = $session->getVariable('mondu_created_order_uuid');
+        $monduOrderUuid = array_values($this->getMonduOrders()->getArray())[0]->getFieldData('order_uuid');
 
-        if (!$monduOrderUuid) {
+        if (!$monduOrderUuid || !$this->getFieldData('oxorder__oxordernr')) {
             return $result;
         }
 
         $this->client->updateOrderExternalInfo(
             $monduOrderUuid,
-            ['external_reference_id' => $this->getFieldData('oxorder__oxordernr') ? (string) $this->getFieldData('oxorder__oxordernr') : $this->getId()]
+            ['external_reference_id' => (string) $this->getFieldData('oxorder__oxordernr')]
         );
 
-        $this->clearSession();
-
         return $result;
-    }
-
-    protected function clearSession()
-    {
-        $session = Registry::getSession();
-        $session->deleteVariable('mondu_created_order_uuid');
     }
 }

@@ -36,7 +36,6 @@ class MonduInvoiceHandler
             return false;
         }
 
-        $session->setVariable('mondu_created_order_uuid', $monduOrderUuid);
         $this->storeMonduOrder($oOrder, $monduOrder);
         $this->clearSession();
 
