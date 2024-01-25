@@ -44,7 +44,7 @@ class Order extends Order_parent
 
             $oMonduInvoices = oxNew(ListModel::class);
             $oMonduInvoices->init(MonduInvoice::class);
-            $oMonduInvoices->selectString($sQuery, [':oxorderid' => $this->getId()]);
+            $oMonduInvoices->selectString($sQuery, [':oxorderid' => $this->getFieldData('oxorder__oxordernr')]);
 
             return $oMonduInvoices;
         }
@@ -91,16 +91,22 @@ class Order extends Order_parent
     public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         $result = parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
-        $monduOrderUuid = array_values($this->getMonduOrders()->getArray())[0]->getFieldData('order_uuid');
 
-        if (!$monduOrderUuid || !$this->getFieldData('oxorder__oxordernr')) {
-            return $result;
+        if (
+            $this->isMonduPayment() &&
+            $this->getMonduOrders()
+        ) {
+            $monduOrderUuid = array_values($this->getMonduOrders()->getArray())[0]->getFieldData( 'order_uuid' );
+
+            if (!$monduOrderUuid || !$this->getFieldData( 'oxorder__oxordernr')) {
+                return $result;
+            }
+
+            $this->client->updateOrderExternalInfo(
+                $monduOrderUuid,
+                ['external_reference_id' => (string) $this->getFieldData('oxorder__oxordernr')]
+            );
         }
-
-        $this->client->updateOrderExternalInfo(
-            $monduOrderUuid,
-            ['external_reference_id' => (string) $this->getFieldData('oxorder__oxordernr')]
-        );
 
         return $result;
     }

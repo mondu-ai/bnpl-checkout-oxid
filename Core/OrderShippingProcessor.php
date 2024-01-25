@@ -52,18 +52,20 @@ class OrderShippingProcessor
         $invoiceDataMapper = oxNew(MonduInvoiceMapper::class);
         $invoiceData = $invoiceDataMapper->getMappedInvoiceData($this->_oOrder);
 
-        $response = $this->client->createInvoice($this->_oMonduOrder->getFieldData('order_uuid'), $invoiceData);
-
-        return $response;
+        return $this->client->createInvoice($this->_oMonduOrder->getFieldData('order_uuid'), $invoiceData);
     }
 
     protected function cancelMonduInvoice()
     {
-        $monduInvoice = array_values($this->_oOrder->getMonduInvoices()->getArray())[0];
+        if ($this->_oOrder->getMonduInvoices()) {
+            $monduInvoice = array_values($this->_oOrder->getMonduInvoices()->getArray())[0];
 
-        if ($monduInvoice) {
-            $response = $this->client->cancelInvoice($this->_oMonduOrder->getFieldData('order_uuid'), $monduInvoice->getFieldData('invoice_uuid'));
-            return $response;
+            if ($monduInvoice) {
+                return $this->client->cancelInvoice(
+                    $this->_oMonduOrder->getFieldData('order_uuid'),
+                    $monduInvoice->getFieldData('invoice_uuid')
+                );
+            }
         }
     }
 
