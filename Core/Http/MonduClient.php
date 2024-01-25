@@ -13,8 +13,8 @@ class MonduClient
 {
     private Config $_config;
     private HttpRequest $_client;
-    private $_baseUrl = '';
-    private $_logger = null;
+    private $_baseUrl;
+    private $_logger;
 
     public function __construct()
     {
@@ -35,6 +35,12 @@ class MonduClient
     }
 
     public function createOrder($data = [])
+    {
+        $order = $this->sendRequest('POST', 'orders', $data);
+        return $order['order'] ?? null;
+    }
+
+    public function authorizeOrder($data = [])
     {
         $order = $this->sendRequest('POST', 'orders', $data);
         return $order['order'] ?? null;
@@ -108,8 +114,8 @@ class MonduClient
     {
         try {
             $url = $this->_baseUrl . $url;
-            $response = $this->_client->send_request($url, $body, $method);
-            return $response;
+
+            return $this->_client->send_request($url, $body, $method);
         } catch (InvalidRequestException $e) {
             $this->_logger->error("MonduClient [{$method} {$url}]: Failed with an exception message: {$e->getString()}");
 

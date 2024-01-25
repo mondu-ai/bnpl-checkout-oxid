@@ -2,6 +2,7 @@
 
 namespace OxidEsales\MonduPayment\Core\Mappers;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
 
 class MonduOrderMapper
@@ -36,20 +37,26 @@ class MonduOrderMapper
 
     public function getMappedOrderData($paymentMethod)
     {
+        $session = Registry::getSession();
         $basket = $this->getBasket();
-
+        $monduOrderUuid = $session->getVariable('mondu_order_uuid');
         $tax = array_values($basket->getProductVats(false))[0];
         $discount = $basket->getTotalDiscount()->getPrice();
         $shipping = $basket->getDeliveryCost()->getPrice();
 
+        $externalReferenceId = uniqid('M_OX_');
         $data = [
             "currency" => $basket->getBasketCurrency()->name,
             "payment_method" => $paymentMethod,
-            "external_reference_id" => uniqid('M_OX_'),
+            "external_reference_id" => $externalReferenceId,
             "gross_amount_cents" => round($basket->getPriceForPayment() * 100),
             "buyer" => MonduHelper::removeEmptyElementsFromArray($this->getBuyerData()),
             "billing_address" => MonduHelper::removeEmptyElementsFromArray($this->getUserBillingAddress()),
             "shipping_address" => MonduHelper::removeEmptyElementsFromArray($this->getUserDeliveryAddress()),
+            "success_url" => Registry::getConfig()->getShopSecureHomeUrl() . 'cl=oemondusuccess&fnc=createOrder&external_reference_id=' . $externalReferenceId . '&order_uuid=' . $monduOrderUuid,
+            "cancel_url" => Registry::getConfig()->getShopSecureHomeUrl() . 'cl=oemonducancel',
+            "declined_url" => Registry::getConfig()->getShopSecureHomeUrl() . 'cl=oemondudeclined',
+            "state_flow" => 'authorization_flow',
             "lines" => [[
                 "tax_cents" => round($tax * 100),
                 "shipping_price_cents" => round($shipping * 100),
