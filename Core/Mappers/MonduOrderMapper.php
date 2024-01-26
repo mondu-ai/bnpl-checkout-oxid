@@ -43,6 +43,7 @@ class MonduOrderMapper
         $tax = array_values($basket->getProductVats(false))[0];
         $discount = $basket->getTotalDiscount()->getPrice();
         $shipping = $basket->getDeliveryCost()->getPrice();
+        $shopUrl = Registry::getConfig()->getCurrentShopUrl();
 
         $externalReferenceId = uniqid('M_OX_');
         $data = [
@@ -53,9 +54,9 @@ class MonduOrderMapper
             "buyer" => MonduHelper::removeEmptyElementsFromArray($this->getBuyerData()),
             "billing_address" => MonduHelper::removeEmptyElementsFromArray($this->getUserBillingAddress()),
             "shipping_address" => MonduHelper::removeEmptyElementsFromArray($this->getUserDeliveryAddress()),
-            "success_url" => Registry::getConfig()->getShopSecureHomeUrl() . 'cl=oemondusuccess&fnc=createOrder&external_reference_id=' . $externalReferenceId . '&order_uuid=' . $monduOrderUuid,
-            "cancel_url" => Registry::getConfig()->getShopSecureHomeUrl() . 'cl=oemonducancel',
-            "declined_url" => Registry::getConfig()->getShopSecureHomeUrl() . 'cl=oemondudeclined',
+            "success_url" => $shopUrl . '?cl=order&fnc=execute&order_uuid=' . $monduOrderUuid . '&sDeliveryAddressMD5=' . $this->getBasketUser()->getEncodedDeliveryAddress(),
+            "cancel_url" => $shopUrl . '?cl=oemonducancel',
+            "declined_url" => $shopUrl . '?cl=oemondudeclined',
             "state_flow" => 'authorization_flow',
             "lines" => [[
                 "tax_cents" => round($tax * 100),

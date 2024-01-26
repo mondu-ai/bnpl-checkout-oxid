@@ -22,7 +22,7 @@ class MonduHelper
 
   public static function isMonduPayment($paymentId = '')
   {
-    return stripos($paymentId, "oxmondu") !== false;
+    return stripos($paymentId, 'oxmondu') !== false;
   }
 
   public static function isMonduModuleActive()

@@ -52,6 +52,12 @@ class MonduClient
         return $order['order'] ?? null;
     }
 
+    public function confirmOrder($orderUuid, $data = [])
+    {
+        $order = $this->sendRequest('POST', 'orders/' . $orderUuid . '/confirm', $data);
+        return $order['order'] ?? null;
+    }
+
     public function getMonduOrder($orderUuid)
     {
         $order = $this->sendRequest('GET', 'orders/' . $orderUuid);
