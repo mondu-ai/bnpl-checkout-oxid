@@ -40,11 +40,16 @@ class Order extends Order_parent
     public function getMonduInvoices()
     {
         if ($this->isMonduPayment()) {
-            $sQuery = 'SELECT * FROM `oemondu_invoices` WHERE `invoice_id`=:oxorderid ORDER BY created_at DESC';
+            $sQuery = 'SELECT * FROM `oemondu_invoices` WHERE `invoice_id` IN (:oxorderid, :oxordernr) ORDER BY created_at DESC';
 
             $oMonduInvoices = oxNew(ListModel::class);
             $oMonduInvoices->init(MonduInvoice::class);
-            $oMonduInvoices->selectString($sQuery, [':oxorderid' => $this->getFieldData('oxorder__oxordernr')]);
+            $oMonduInvoices->selectString(
+                $sQuery, [
+                    ':oxorderid' => $this->getId(),
+                    ':oxordernr' => $this->getFieldData('oxorder__oxordernr')
+                ]
+            );
 
             return $oMonduInvoices;
         }
