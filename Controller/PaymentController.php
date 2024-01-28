@@ -2,6 +2,7 @@
 
 namespace OxidEsales\MonduPayment\Controller;
 
+use OxidEsales\MonduPayment\Core\Config;
 use OxidEsales\MonduPayment\Core\Http\MonduClient;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
 use OxidEsales\MonduPayment\Model\MonduPayment;
@@ -9,6 +10,7 @@ use OxidEsales\MonduPayment\Model\MonduPayment;
 class PaymentController extends PaymentController_parent
 {
     protected MonduClient $_client;
+    protected Config $_config;
     protected $_paymentList;
     protected $_monduAllowedPaymentMethods;
 
@@ -16,6 +18,7 @@ class PaymentController extends PaymentController_parent
     {
         parent::__construct();
 
+        $this->_config = oxNew(Config::class);
         $this->_client = oxNew(MonduClient::class);
     }
 
@@ -25,7 +28,7 @@ class PaymentController extends PaymentController_parent
             $this->_paymentList = parent::getPaymentList();
         }
 
-        if (MonduHelper::isMonduModuleActive()) {
+        if (MonduHelper::isMonduModuleActive() && $this->_config->getIsMerchantIdentified()) {
             $this->filterMonduPaymentMethods();
         }
 

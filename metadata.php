@@ -66,6 +66,7 @@ $aModule = array(
         array('group' => 'oemondu_banners', 'name' => 'oemonduApiKey', 'type' => 'str', 'value' => ''),
         array('group' => 'oemondu_banners', 'name' => 'oemonduSandboxMode', 'type' => 'bool', 'value' => 'false'),
         array('group' => 'oemondu_banners', 'name' => 'oemonduErrorLogging', 'type' => 'bool', 'value' => 'true'),
-        array('name'  => 'oemonduWebhookSecret', 'type' => 'str', 'value' => '')
+        array('name'  => 'oemonduWebhookSecret', 'type' => 'str', 'value' => ''),
+        array('name'  => 'oemonduIsMerchantIdentified', 'type' => 'bool', 'value' => 'false')
     )
 );
