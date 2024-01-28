@@ -89,9 +89,10 @@ class OrderController extends OrderController_parent
             Registry::getSession()->setVariable('sess_challenge', Registry::getUtilsObject()->generateUID());
         }
 
+        $iSuccess = 0;
         $oBasket->calculateBasket(true);
-
         $oOrder = oxNew(Order::class);
+
         try {
             $iSuccess = $oOrder->finalizeOrder($oBasket, $oBasket->getUser());
         } catch (StandardException $e) {
@@ -101,13 +102,6 @@ class OrderController extends OrderController_parent
         if ($iSuccess === 1) {
             // performing special actions after user finishes order (assignment to special user groups)
             $this->_oUser->onOrderExecute($oBasket, $iSuccess);
-
-            if ($this->isRegisterNewUserNeeded()) {
-                $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-                $oEmail->sendForgotPwdEmail($this->_oUser->oxuser__oxusername->value);
-            }
-
-            Registry::getSession()->setVariable('paymentid', 'oxmondu');
         }
 
         return $iSuccess;
