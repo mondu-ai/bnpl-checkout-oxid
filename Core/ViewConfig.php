@@ -30,4 +30,10 @@ class ViewConfig extends ViewConfig_parent
 	{
 		return MonduHelper::isMonduPayment($paymentId);
 	}
+
+    public function isOrderPending()
+    {
+        return true;
+    }
+
 }

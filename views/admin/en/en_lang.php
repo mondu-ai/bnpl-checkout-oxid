@@ -10,6 +10,7 @@ $aLang = array(
     'SHOP_MODULE_oemonduErrorLogging'    => 'Activate Mondu logging',
 
     'INVALID_API_KEY'              => 'Invalid Mondu API Key.',
+    'MONDU_ORDER_IS_PENDING'       => 'This order is in Pending status. Mondu should approve it before it can be delivered.',
     'MONDU_WILL_CREATE_INVOICE'    => 'Shipping this order will create an invoice in the Mondu portal. Do you want to proceed?',
     'MONDU_WILL_CANCEL_INVOICE'    => 'If you cancel shipping, the corresponding invoice will also be cancelled in the Mondu portal. This action can not be reverted. Are you sure you want to proceed?',
     'MONDU_CREATE_INVOICE_ERROR'   => 'This order can not be invoiced by Mondu.',

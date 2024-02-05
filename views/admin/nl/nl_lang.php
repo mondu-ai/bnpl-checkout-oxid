@@ -10,6 +10,7 @@ $aLang = array(
     'SHOP_MODULE_oemonduErrorLogging'    => 'Activeer Mondu logging',
 
     'INVALID_API_KEY'              => 'Ongeldige Mondu API Key.',
+    'MONDU_ORDER_IS_PENDING'       => 'This order is in Pending status. It should be approved by Mondu before it can be delivered.',
     'MONDU_WILL_CREATE_INVOICE'    => 'Als deze bestelling wordt verzonden, zal er een factuur aangemaakt worden in het Mondu-portal. Wil je doorgaan?',
     'MONDU_WILL_CANCEL_INVOICE'    => 'Als je de verzending van de bestelling annuleert, zal tevens de factuur in het Mondu-portal geannuleerd worden. Deze actie kan je niet terugdraaien. Weet je zeker dat je verder wilt gaan?',
     'MONDU_CREATE_INVOICE_ERROR'   => 'Deze bestelling kan niet door Mondu worden gefactureerd.',

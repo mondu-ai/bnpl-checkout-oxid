@@ -52,6 +52,23 @@ class OrderOverview extends OrderOverview_parent
         return $this->_oOrder && $this->_oOrder->isMonduPayment();
     }
 
+    public function isOrderPending()
+    {
+        $monduOrders = $this->_oOrder->getMonduOrders();
+
+        if (
+            !$monduOrders ||
+            !$monduOrders->getArray() ||
+            !array_values($monduOrders->getArray())[0]
+        ) {
+            return false;
+        }
+
+        $monduOrder = array_values($monduOrders->getArray())[0];
+
+        return $monduOrder && $monduOrder->oemondu_orders__order_state->value == 'pending';
+    }
+
     protected function getOrder()
     {
         $oOrder = oxNew(Order::class);

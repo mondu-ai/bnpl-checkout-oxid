@@ -23,10 +23,15 @@
       if (shipForm) {
         shipForm.addEventListener('submit', (event) => {
           event.preventDefault();
-          const isConfirmed = confirm("[{oxmultilang ident="MONDU_WILL_CREATE_INVOICE"}]");
 
-          if(isConfirmed) {
-            event.target.submit();
+          if ([{$oView->isOrderPending()}] == 1) {
+            alert("[{oxmultilang ident="MONDU_ORDER_IS_PENDING"}]");
+          } else {
+            const isConfirmed = confirm("[{oxmultilang ident="MONDU_WILL_CREATE_INVOICE"}]");
+
+            if(isConfirmed) {
+              event.target.click();
+            }
           }
         });
       }

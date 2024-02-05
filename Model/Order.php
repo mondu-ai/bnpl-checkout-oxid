@@ -4,8 +4,6 @@ namespace OxidEsales\MonduPayment\Model;
 
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
-use OxidEsales\MonduPayment\Model\MonduOrder;
-use OxidEsales\MonduPayment\Model\MonduInvoice;
 
 class Order extends Order_parent
 {

@@ -10,6 +10,7 @@ $aLang = array(
     'SHOP_MODULE_oemonduErrorLogging'    => 'Mondu Logging aktivieren',
 
     'INVALID_API_KEY'              => 'Ungültiger Mondu API Key.',
+    'MONDU_ORDER_IS_PENDING'       => 'This order is in Pending status. Mondu should approve it before it can be delivered.',
     'MONDU_WILL_CREATE_INVOICE'    => 'Beim Versand dieser Bestellung wird eine Rechnung in Mondu erstellt. Möchten Sie fortfahren?',
     'MONDU_WILL_CANCEL_INVOICE'    => 'Durch die Stornierung des Versands wird eine Rechnung in Mondu storniert. Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?',
     'MONDU_CREATE_INVOICE_ERROR'   => 'Diese Bestellung kann durch Mondu nicht in Rechnung gestellt werden.',
