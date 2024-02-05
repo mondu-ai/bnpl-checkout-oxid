@@ -5,7 +5,7 @@ namespace OxidEsales\MonduPayment\Controller;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsView;
 
-class DeclineController extends \OxidEsales\Eshop\Application\Controller\FrontendController
+class DeclinedController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     public function render()
     {

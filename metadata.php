@@ -36,7 +36,7 @@ $aModule = array(
         'oemonducheckout' => \OxidEsales\MonduPayment\Controller\MonduCheckoutController::class,
         'oemonduwebhooks' => \OxidEsales\MonduPayment\Controller\MonduWebhooksController::class,
         'oemonducancel' => \OxidEsales\MonduPayment\Controller\CancelController::class,
-        'oemondudecline' => \OxidEsales\MonduPayment\Controller\DeclineController::class
+        'oemondudeclined' => \OxidEsales\MonduPayment\Controller\DeclinedController::class
     ),
     'blocks' => array(
         array(
