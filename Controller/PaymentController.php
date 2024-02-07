@@ -64,7 +64,7 @@ class PaymentController extends PaymentController_parent
     protected function removeMonduPaymentMethods()
     {
         $this->_paymentList = array_filter($this->_paymentList, function ($i) {
-            return !(stripos( $i->oxpayments__oxid->value, MONDU_PREFIX ) !== false);
+            return !(stripos($i->oxpayments__oxid->value, MONDU_PREFIX) !== false);
         });
     }
 
