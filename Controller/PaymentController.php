@@ -7,6 +7,7 @@ use OxidEsales\MonduPayment\Core\Http\MonduClient;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
 use OxidEsales\MonduPayment\Model\MonduPayment;
 
+const MONDU_PREFIX = 'mondu_';
 class PaymentController extends PaymentController_parent
 {
     protected MonduClient $_client;
@@ -30,6 +31,8 @@ class PaymentController extends PaymentController_parent
 
         if (MonduHelper::isMonduModuleActive() && $this->_config->getIsMerchantIdentified()) {
             $this->filterMonduPaymentMethods();
+        } else {
+            $this->removeMonduPaymentMethods();
         }
 
         return $this->_paymentList;
@@ -55,6 +58,13 @@ class PaymentController extends PaymentController_parent
             }
 
             return true;
+        });
+    }
+
+    protected function removeMonduPaymentMethods()
+    {
+        $this->_paymentList = array_filter($this->_paymentList, function ($i) {
+            return !(stripos( $i->oxpayments__oxid->value, MONDU_PREFIX ) !== false);
         });
     }
 
