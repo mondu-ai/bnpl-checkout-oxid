@@ -10,6 +10,6 @@ class CancelController extends \OxidEsales\Eshop\Application\Controller\Frontend
     public function render()
     {
         Registry::get(UtilsView::class)->addErrorToDisplay('Mondu: Order has been canceled');
-        Registry::getUtils()->redirect(Registry::getConfig()->getShopSecureHomeUrl() . 'cl=basket', false);
+        Registry::getUtils()->redirect(Registry::getConfig()->getShopSecureHomeUrl() . 'cl=payment', false);
     }
 }

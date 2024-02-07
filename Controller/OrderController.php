@@ -53,9 +53,7 @@ class OrderController extends OrderController_parent
             }
 
             $monduOrder = $this->_client->getMonduOrder($orderUuid);
-            $response = $this->_client->confirmOrder($orderUuid, [
-                'external_reference_id' => $monduOrder['external_reference_id']
-            ]);
+            $response = $this->_client->confirmOrder($orderUuid);
 
             if (isset($response['state']) && $response['state'] == 'confirmed') {
                 try {

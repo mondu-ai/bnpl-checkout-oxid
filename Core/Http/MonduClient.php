@@ -40,12 +40,6 @@ class MonduClient
         return $order['order'] ?? null;
     }
 
-    public function authorizeOrder($data = [])
-    {
-        $order = $this->sendRequest('POST', 'orders', $data);
-        return $order['order'] ?? null;
-    }
-
     public function updateOrderExternalInfo($orderUuid, $data = [])
     {
         $order = $this->sendRequest('POST', 'orders/' . $orderUuid . '/update_external_info', $data);

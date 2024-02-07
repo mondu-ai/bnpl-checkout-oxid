@@ -10,6 +10,6 @@ class DeclinedController extends \OxidEsales\Eshop\Application\Controller\Fronte
     public function render()
     {
         Registry::get(UtilsView::class)->addErrorToDisplay('Mondu: Order has been declined');
-        Registry::getUtils()->redirect(Registry::getConfig()->getShopSecureHomeUrl() . 'cl=basket', false);
+        Registry::getUtils()->redirect(Registry::getConfig()->getShopSecureHomeUrl() . 'cl=payment', false);
     }
 }
