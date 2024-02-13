@@ -31,7 +31,7 @@ class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\F
         $orderData = $this->_orderMapper->getMappedOrderData($paymentMethod);
 
         $response = $this->_client->createOrder($orderData);
-        $token = isset($response['uuid']) ? $response['uuid'] : 'error';
+        $token = $response['uuid'] ?? 'error';
 
         if ($token !== 'error') {
             $session = Registry::getSession();

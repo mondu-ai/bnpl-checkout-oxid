@@ -14,7 +14,7 @@ class MonduAdjustmentMapper
 
         $data = [
             "currency" => $order->getOrderCurrency()->name,
-            "external_reference_id" => $order->getId(),
+            "external_reference_id" => $order->getFieldData('oxorder__oxordernr') ? (string) $order->getFieldData('oxorder__oxordernr') : $order->getId(),
             "amount" => [
                 "net_price_cents" => round($order->getOrderNetSum() * 100),
                 "tax_cents" => round($tax * 100),
