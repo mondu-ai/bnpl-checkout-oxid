@@ -25,14 +25,9 @@ class MonduInvoiceHandler
             return false;
         }
 
-        $updatedOrder = $this->_client->updateOrderExternalInfo(
-            $monduOrderUuid,
-            ['external_reference_id' => $oOrder->getId()]
-        );
+        $monduOrder = $this->_client->getMonduOrder($monduOrderUuid);
 
-        $monduOrder = $this->_client->getMonduOrder($updatedOrder['uuid']);
-
-        if (!$updatedOrder || !$monduOrder) {
+        if (!$monduOrder) {
             return false;
         }
 

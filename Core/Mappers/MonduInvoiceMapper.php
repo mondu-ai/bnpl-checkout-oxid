@@ -11,7 +11,7 @@ class MonduInvoiceMapper
     $invoiceLineItems = $this->getInvoiceLineItems($order);
 
     return MonduHelper::removeEmptyElementsFromArray([
-      'external_reference_id' => $order->getId(),
+      'external_reference_id' => $order->getFieldData('oxorder__oxordernr') ? (string) $order->getFieldData('oxorder__oxordernr') : $order->getId(),
       'invoice_url' => 'http://localhost',
       'gross_amount_cents' => round($order->getFieldData('oxtotalordersum') * 100),
       'line_items' => $invoiceLineItems
