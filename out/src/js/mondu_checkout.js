@@ -36,13 +36,17 @@ class MonduCheckout {
         event.preventDefault();
 
         if (this._isWidgetLoaded) {
-            const token = await this._getMonduToken();
+            const monduOrderData = await this._getMonduOrderData();
 
-            if (!token) {
+            if (!monduOrderData || !monduOrderData.token) {
                 window.location.href = this._paymentUrl;
             }
 
-            this._renderWidget(token);
+            if (monduOrderData.hostedCheckoutUrl) {
+                window.location.href = monduOrderData.hostedCheckoutUrl;
+            } else {
+                this._renderWidget(monduOrderData.token);
+            }
         }
     }
 
@@ -57,13 +61,13 @@ class MonduCheckout {
         });
     }
 
-    async _getMonduToken() {
+    async _getMonduOrderData() {
         try {
             const client = new HttpRequest();
             const { data } = await client.post('?cl=oemonducheckout&fnc=createOrder', {});
 
             if (data.token !== 'error') {
-                return data.token;
+                return data;
             } else {
                 return null;
             }

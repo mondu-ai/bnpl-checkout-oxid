@@ -10,7 +10,7 @@ $aModule = array(
         'en' => 'Module for Mondu payment.',
     ),
     'thumbnail'    => 'out/src/images/logo.png',
-    'version'      => '1.0.3',
+    'version'      => '1.1.0',
     'author'       => 'Mondu GmbH',
     'url'          => 'https://www.mondu.ai',
     'email'        => 'contact@mondu.ai',
@@ -34,7 +34,9 @@ $aModule = array(
     ),
     'controllers' => array(
         'oemonducheckout' => \OxidEsales\MonduPayment\Controller\MonduCheckoutController::class,
-        'oemonduwebhooks' => \OxidEsales\MonduPayment\Controller\MonduWebhooksController::class
+        'oemonduwebhooks' => \OxidEsales\MonduPayment\Controller\MonduWebhooksController::class,
+        'oemonducancel' => \OxidEsales\MonduPayment\Controller\CancelController::class,
+        'oemondudeclined' => \OxidEsales\MonduPayment\Controller\DeclinedController::class
     ),
     'blocks' => array(
         array(

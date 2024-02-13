@@ -38,7 +38,10 @@ class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\F
             $session->setVariable('mondu_order_uuid', $token);
         }
 
-        echo json_encode(['token' => $token]);
+        echo json_encode([
+            'token' => $token,
+            'hostedCheckoutUrl' => $response['hosted_checkout_url'] ?? false
+        ]);
 
         exit();
     }
