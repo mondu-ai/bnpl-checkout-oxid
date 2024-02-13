@@ -10,7 +10,7 @@ $aModule = array(
         'en' => 'Module for Mondu payment.',
     ),
     'thumbnail'    => 'out/src/images/logo.png',
-    'version'      => '1.0.2',
+    'version'      => '1.1.0',
     'author'       => 'Mondu GmbH',
     'url'          => 'https://www.mondu.ai',
     'email'        => 'contact@mondu.ai',
@@ -68,6 +68,7 @@ $aModule = array(
         array('group' => 'oemondu_banners', 'name' => 'oemonduApiKey', 'type' => 'str', 'value' => ''),
         array('group' => 'oemondu_banners', 'name' => 'oemonduSandboxMode', 'type' => 'bool', 'value' => 'false'),
         array('group' => 'oemondu_banners', 'name' => 'oemonduErrorLogging', 'type' => 'bool', 'value' => 'true'),
-        array('name'  => 'oemonduWebhookSecret', 'type' => 'str', 'value' => '')
+        array('name'  => 'oemonduWebhookSecret', 'type' => 'str', 'value' => ''),
+        array('name'  => 'oemonduIsMerchantIdentified', 'type' => 'bool', 'value' => 'false')
     )
 );
