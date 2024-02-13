@@ -71,6 +71,16 @@ class Config
         $this->setParameter('oemonduWebhookSecret', $webhookSecret);
     }
 
+    public function getIsMerchantIdentified()
+    {
+        return $this->getParameter('oemonduIsMerchantIdentified');
+    }
+
+    public function setIsMerchantIdentified($isMerchantIdentified)
+    {
+        $this->setParameter('oemonduIsMerchantIdentified', $isMerchantIdentified);
+    }
+
     public function getMonduLogo()
     {
         return self::LOGO_URL;
