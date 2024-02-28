@@ -23,6 +23,8 @@ class SettingChangedSubscriber extends AbstractShopAwareEventSubscriber
 
     public function afterSettingChange(SettingChangedEvent $event)
     {
+        if($event->getModuleId() !== 'oemondu') return;
+
         if ($event->getSettingName() === 'oemonduWebhookSecret') {
             return;
         }
@@ -39,6 +41,8 @@ class SettingChangedSubscriber extends AbstractShopAwareEventSubscriber
         foreach (self::REQUIRED_WEBHOOK_TOPICS as $webhookTopic) {
             $webhookParams = oxNew(Webhook::class, $webhookTopic)->getData();
             $response = $this->_client->registerWebhook($webhookParams);
+
+            if ($response['status'] === 409) return;
 
             if (!$response['webhook']) {
                 $errorMessage = $response['status'] === 403 ? 'INVALID_API_KEY' : 'MONDU_REGISTER_WEBHOOK_ERROR';
