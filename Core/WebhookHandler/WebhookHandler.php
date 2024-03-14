@@ -12,6 +12,7 @@ class WebhookHandler
     {
         switch ($params['topic']) {
             case 'order/confirmed':
+            case 'order/authorized':
             case 'order/pending':
             case 'order/declined':
             case 'order/canceled':
