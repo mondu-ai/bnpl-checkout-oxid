@@ -112,11 +112,13 @@ class HttpRequest
     /**
      * for sending request
      *
-     * @param array $data
-     * @param boolean $token
+     * @param string $url
+     * @param array|null $data
+     * @param string $method
      * @return array $response
+     * @throws InvalidRequestException
      */
-    public function send_request(string $url, array $data, string $method)
+    public function send_request(string $url, ?array $data, string $method)
     {
         $this->curl = curl_init();
 
@@ -125,7 +127,7 @@ class HttpRequest
 
         if ($method === 'POST') {
             curl_setopt($this->curl, CURLOPT_POST, true);
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
+            if ($data) curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
         }
 
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);

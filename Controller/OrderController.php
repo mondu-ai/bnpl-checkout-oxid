@@ -52,7 +52,6 @@ class OrderController extends OrderController_parent
                 throw new \Exception('Mondu: Not found');
             }
 
-            $monduOrder = $this->_client->getMonduOrder($orderUuid);
             $response = $this->_client->confirmOrder($orderUuid);
 
             if (isset($response['state']) && $response['state'] == 'confirmed') {
