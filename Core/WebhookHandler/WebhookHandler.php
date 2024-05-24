@@ -2,14 +2,23 @@
 
 namespace OxidEsales\MonduPayment\Core\WebhookHandler;
 
+use OxidEsales\MonduPayment\Core\Logger;
 use OxidEsales\MonduPayment\Model\MonduInvoice;
 use OxidEsales\MonduPayment\Model\MonduOrder;
 use Symfony\Component\HttpFoundation\Response;
 
 class WebhookHandler
 {
+    private Logger $_logger;
+
+    public function __construct()
+    {
+        $this->_logger = oxNew(Logger::class)->getLogger();
+    }
+
     public function handleWebhook($params)
     {
+        $this->_logger->debug('MonduWebhookHandler [handleWebhook]: ' . print_r($params, true));
         switch ($params['topic']) {
             case 'order/confirmed':
             case 'order/authorized':
@@ -28,6 +37,7 @@ class WebhookHandler
 
     public function handleOrderStateChanged($params)
     {
+        $this->_logger->debug('MonduWebhookHandler [handleOrderStateChanged]: ' . print_r($params, true));
         $monduOrder = $this->getOrder($params['order_uuid']);
 
         if ($monduOrder) {
@@ -40,6 +50,7 @@ class WebhookHandler
 
     public function handleInvoiceStateChanged($params, $state)
     {
+        $this->_logger->debug('MonduWebhookHandler [handleInvoiceStateChanged]: ' . print_r($params, true));
         $monduInvoice = $this->getInvoice($params['invoice_uuid']);
 
         if ($monduInvoice) {

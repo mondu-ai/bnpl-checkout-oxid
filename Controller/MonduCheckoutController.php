@@ -3,6 +3,7 @@
 namespace OxidEsales\MonduPayment\Controller;
 
 use OxidEsales\MonduPayment\Core\Http\MonduClient;
+use OxidEsales\MonduPayment\Core\Logger;
 use OxidEsales\MonduPayment\Core\Mappers\MonduOrderMapper;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\MonduPayment\Model\MonduPayment;
@@ -12,6 +13,7 @@ class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\F
 {
     protected MonduClient $_client;
     protected MonduOrderMapper $_orderMapper;
+    protected Logger $_logger;
 
     public function __construct()
     {
@@ -19,6 +21,7 @@ class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\F
 
         $this->_client = oxNew(MonduClient::class);
         $this->_orderMapper = oxNew(MonduOrderMapper::class);
+        $this->_logger = oxNew(Logger::class)->getLogger();
     }
 
     public function createOrder()
@@ -29,9 +32,10 @@ class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\F
         $paymentMethod = $this->getPaymentMethod();
 
         $orderData = $this->_orderMapper->getMappedOrderData($paymentMethod);
-
         $response = $this->_client->createOrder($orderData);
         $token = $response['uuid'] ?? 'error';
+        $this->_logger->debug('MonduCheckoutController [createOrder $orderData]: ' . print_r($orderData, true));
+        $this->_logger->debug('MonduCheckoutController [createOrder $response]: ' . print_r($response, true));
 
         if ($token !== 'error') {
             $session = Registry::getSession();

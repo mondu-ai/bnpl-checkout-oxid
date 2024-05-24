@@ -2,6 +2,7 @@
 
 namespace OxidEsales\MonduPayment\Controller;
 
+use OxidEsales\MonduPayment\Core\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OxidEsales\MonduPayment\Core\WebhookHandler\WebhookHandler;
@@ -11,11 +12,13 @@ class MonduWebhooksController extends \OxidEsales\Eshop\Application\Controller\F
 {
     private $_webhookHandler;
     private $_config;
+    private Logger $_logger;
 
     public function __construct()
     {
         $this->_webhookHandler = oxNew(WebhookHandler::class);
         $this->_config = oxNew(Config::class);
+        $this->_logger = oxNew(Logger::class)->getLogger();
     }
 
     public function render()
@@ -42,7 +45,11 @@ class MonduWebhooksController extends \OxidEsales\Eshop\Application\Controller\F
 
         $params = json_decode($content, true);
 
+        $this->_logger->debug('MonduWebhooksController [handleRequest $params]: ' . print_r($params, true));
         [$resBody, $resStatus] = $this->_webhookHandler->handleWebhook($params);
+
+        $this->_logger->debug('MonduWebhooksController [handleRequest $resBody]: ' . print_r($resBody, true));
+        $this->_logger->debug('MonduWebhooksController [handleRequest $resStatus]: ' . print_r($resStatus, true));
 
         return new Response(
             json_encode($resBody),
