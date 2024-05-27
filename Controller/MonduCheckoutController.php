@@ -3,17 +3,17 @@
 namespace OxidEsales\MonduPayment\Controller;
 
 use OxidEsales\MonduPayment\Core\Http\MonduClient;
-use OxidEsales\MonduPayment\Core\Logger;
 use OxidEsales\MonduPayment\Core\Mappers\MonduOrderMapper;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\MonduPayment\Model\MonduPayment;
 use OxidEsales\Eshop\Application\Model\Order;
+use Psr\Log\LoggerInterface;
 
 class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     protected MonduClient $_client;
     protected MonduOrderMapper $_orderMapper;
-    protected Logger $_logger;
+    private LoggerInterface $_logger;
 
     public function __construct()
     {
@@ -21,7 +21,7 @@ class MonduCheckoutController extends \OxidEsales\Eshop\Application\Controller\F
 
         $this->_client = oxNew(MonduClient::class);
         $this->_orderMapper = oxNew(MonduOrderMapper::class);
-        $this->_logger = oxNew(Logger::class)->getLogger();
+        $this->_logger = Registry::getLogger();
     }
 
     public function createOrder()

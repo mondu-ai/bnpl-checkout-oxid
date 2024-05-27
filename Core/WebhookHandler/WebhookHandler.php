@@ -2,18 +2,19 @@
 
 namespace OxidEsales\MonduPayment\Core\WebhookHandler;
 
-use OxidEsales\MonduPayment\Core\Logger;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\MonduPayment\Model\MonduInvoice;
 use OxidEsales\MonduPayment\Model\MonduOrder;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class WebhookHandler
 {
-    private Logger $_logger;
+    private LoggerInterface $_logger;
 
     public function __construct()
     {
-        $this->_logger = oxNew(Logger::class)->getLogger();
+        $this->_logger = Registry::getLogger();
     }
 
     public function handleWebhook($params)

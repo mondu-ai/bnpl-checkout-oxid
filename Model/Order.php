@@ -3,9 +3,10 @@
 namespace OxidEsales\MonduPayment\Model;
 
 use OxidEsales\Eshop\Core\Model\ListModel;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\MonduPayment\Core\Http\MonduClient;
-use OxidEsales\MonduPayment\Core\Logger;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
+use Psr\Log\LoggerInterface;
 
 class Order extends Order_parent
 {
@@ -15,15 +16,16 @@ class Order extends Order_parent
     private mixed $client;
 
     /**
-     * @var Logger
+     * @var LoggerInterface
      */
-    private Logger $_logger;
+    private LoggerInterface $_logger;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->client = oxNew(MonduClient::class);
-        $this->_logger = oxNew(Logger::class)->getLogger();
+        $this->_logger = Registry::getLogger();
     }
 
     public function getMonduOrders()
