@@ -11,12 +11,14 @@ use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\MonduPayment\Core\Http\MonduClient;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class OrderController extends OrderController_parent
 {
     private MonduClient $_client;
     private User|null|false $_oUser;
+    private LoggerInterface $_logger;
 
     public function __construct()
     {
@@ -24,6 +26,7 @@ class OrderController extends OrderController_parent
 
         $this->_client = oxNew(MonduClient::class);
         $this->_oUser = $this->getUser();
+        $this->_logger = Registry::getLogger();
     }
 
     public function isMonduPayment()
@@ -53,7 +56,7 @@ class OrderController extends OrderController_parent
             }
 
             $response = $this->_client->confirmOrder($orderUuid);
-
+            $this->_logger->debug('MonduOrderController [execute $response]: ' . print_r($response, true));
             if (isset($response['state']) && $response['state'] == 'confirmed') {
                 try {
                     $iSuccess = $this->monduExecute($this->getBasket());

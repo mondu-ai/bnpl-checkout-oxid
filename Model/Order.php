@@ -6,8 +6,7 @@ use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\MonduPayment\Core\Http\MonduClient;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
-use OxidEsales\MonduPayment\Model\MonduOrder;
-use OxidEsales\MonduPayment\Model\MonduInvoice;
+use Psr\Log\LoggerInterface;
 
 class Order extends Order_parent
 {
@@ -16,10 +15,17 @@ class Order extends Order_parent
      */
     private mixed $client;
 
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $_logger;
+
+
     public function __construct()
     {
         parent::__construct();
         $this->client = oxNew(MonduClient::class);
+        $this->_logger = Registry::getLogger();
     }
 
     public function getMonduOrders()
@@ -97,12 +103,14 @@ class Order extends Order_parent
     {
         $result = parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
 
+        $this->_logger->debug('MonduOrder [finalizeOrder $result]: ' . print_r($result, true));
         if (
             $this->isMonduPayment() &&
             $this->getMonduOrders()
         ) {
             $monduOrderUuid = array_values($this->getMonduOrders()->getArray())[0]->getFieldData( 'order_uuid' );
 
+            $this->_logger->debug('MonduOrder [finalizeOrder $monduOrderUuid]: ' . print_r($monduOrderUuid, true));
             if (!$monduOrderUuid || !$this->getFieldData( 'oxorder__oxordernr')) {
                 return $result;
             }
