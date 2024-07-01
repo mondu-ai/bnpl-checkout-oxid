@@ -3,13 +3,27 @@
 namespace OxidEsales\MonduPayment\Core\Mappers;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
+use OxidEsales\MonduPayment\Services\BuyerFeeCentsServiceInterface;
 
 class MonduOrderMapper
 {
     protected $_basket = null;
     protected $_deliveryAddress = null;
 
+    /**
+     * @var BuyerFeeCentsServiceInterface
+     */
+    protected $buyerFeeCentsService = null;
+
+    public function __construct() {
+        $container = ContainerFactory::getInstance()->getContainer();
+
+        if ($container->has(BuyerFeeCentsServiceInterface::class)) {
+            $this->buyerFeeCentsService = $container->get(BuyerFeeCentsServiceInterface::class);
+        }
+    }
     public function getBasket()
     {
         return $this->_basket;
@@ -60,6 +74,7 @@ class MonduOrderMapper
             "state_flow" => 'authorization_flow',
             "lines" => [[
                 "tax_cents" => round($tax * 100),
+                "buyer_fee_cents" => $this->buyerFeeCentsService?->getBuyerFeeCentsFromBasked($basket),
                 "shipping_price_cents" => round($shipping * 100),
                 "discount_cents" => round($discount * 100),
                 "line_items" => $this->getOrderLineItems()
