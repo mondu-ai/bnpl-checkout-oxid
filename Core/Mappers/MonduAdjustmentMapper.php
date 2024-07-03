@@ -20,6 +20,7 @@ class MonduAdjustmentMapper
             $this->buyerFeeCentsService = $container->get(BuyerFeeCentsServiceInterface::class);
         }
     }
+
     public function getMappedOrderData($order)
     {
         $tax = array_values($order->getProductVats(false))[0];
