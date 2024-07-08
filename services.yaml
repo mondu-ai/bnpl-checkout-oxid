@@ -6,6 +6,10 @@ services:
     OxidEsales\MonduPayment\Core\Http\MonduClient:
         public: true
 
+    OxidEsales\MonduPayment\Services\BuyerFeeCentsServiceInterface:
+        class: OxidEsales\MonduPayment\Services\BuyerFeeCentsService
+        public: true
+
     OxidEsales\MonduPayment\Event\SettingChangedSubscriber:
         tags: ['kernel.event_subscriber']
 

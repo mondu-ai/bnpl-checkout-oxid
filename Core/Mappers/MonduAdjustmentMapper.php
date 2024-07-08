@@ -2,10 +2,25 @@
 
 namespace OxidEsales\MonduPayment\Core\Mappers;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
+use OxidEsales\MonduPayment\Services\BuyerFeeCentsServiceInterface;
 
 class MonduAdjustmentMapper
 {
+    /**
+     * @var BuyerFeeCentsServiceInterface
+     */
+    private $buyerFeeCentsService = null;
+
+    public function __construct() {
+        $container = ContainerFactory::getInstance()->getContainer();
+
+        if ($container->has(BuyerFeeCentsServiceInterface::class)) {
+            $this->buyerFeeCentsService = $container->get(BuyerFeeCentsServiceInterface::class);
+        }
+    }
+
     public function getMappedOrderData($order)
     {
         $tax = array_values($order->getProductVats(false))[0];
@@ -22,6 +37,7 @@ class MonduAdjustmentMapper
             ],
             "lines" => [[
                 "tax_cents" => round($tax * 100),
+                'buyer_fee_cents' => $this->buyerFeeCentsService->getBuyerFeeCentsFromOrder($order),
                 "shipping_price_cents" => round($shipping * 100),
                 "discount_cents" => round($discount * 100),
                 "line_items" => $this->getOrderLineItems($order)
