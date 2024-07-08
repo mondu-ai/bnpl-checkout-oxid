@@ -38,6 +38,11 @@ class MonduWebhooksController extends \OxidEsales\Eshop\Application\Controller\F
         $content = $request->getContent();
         $headers = $request->headers;
 
+        json_decode($content);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $content = json_encode($content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT | JSON_HEX_AMP);
+        }
+
         $signature = hash_hmac('sha256', $content, $this->_config->getWebhooksSecret());
         if ($signature !== $headers->get('X-Mondu-Signature')) {
             return new Response('Invalid signature', 401);
