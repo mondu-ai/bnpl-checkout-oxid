@@ -121,6 +121,10 @@ class Order extends Order_parent
             );
         }
 
+        if ($this->isMonduPayment() && !$this->getMonduOrders()) {
+            $this->_logger->debug('MonduOrder [empty Mondu orders]: ' . print_r($result, true));
+        }
+
         return $result;
     }
 }

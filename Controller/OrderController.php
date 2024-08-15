@@ -55,11 +55,16 @@ class OrderController extends OrderController_parent
                 throw new \Exception('Mondu: Not found');
             }
 
-            $response = $this->_client->confirmOrder($orderUuid);
+            $oBasket = $this->getBasket();
+            $data = [];
+            if ($oBasket->getOrderId()) {
+                $data['external_reference_id'] = $oBasket->getOrderId();
+            }
+            $response = $this->_client->confirmOrder($orderUuid, $data);
             $this->_logger->debug('MonduOrderController [execute $response]: ' . print_r($response, true));
             if (isset($response['state']) && $response['state'] == 'confirmed') {
                 try {
-                    $iSuccess = $this->monduExecute($this->getBasket());
+                    $iSuccess = $this->monduExecute($oBasket);
 
                     return $this->_getNextStep($iSuccess);
                 } catch (Exception $e) {
