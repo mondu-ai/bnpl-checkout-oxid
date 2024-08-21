@@ -40,16 +40,16 @@ class MonduWebhooksController extends \OxidEsales\Eshop\Application\Controller\F
 
         $signature = hash_hmac('sha256', $content, $this->_config->getWebhooksSecret());
         if ($signature !== $headers->get('X-Mondu-Signature')) {
+            $this->_logger->debug('MonduWebhooksController [WebhooksSecret]: ' . print_r($this->_config->getWebhooksSecret(), true));
+            $this->_logger->debug('MonduWebhooksController [Content]: ' . print_r($content, true));
+            $this->_logger->debug('MonduWebhooksController [X-Mondu-Signature]: ' . print_r($headers->get('X-Mondu-Signature'), true));
+            $this->_logger->debug('MonduWebhooksController [Signature]: ' . print_r($signature, true));
+
             return new Response('Invalid signature', 401);
         }
 
         $params = json_decode($content, true);
-
-        $this->_logger->debug('MonduWebhooksController [handleRequest $params]: ' . print_r($params, true));
         [$resBody, $resStatus] = $this->_webhookHandler->handleWebhook($params);
-
-        $this->_logger->debug('MonduWebhooksController [handleRequest $resBody]: ' . print_r($resBody, true));
-        $this->_logger->debug('MonduWebhooksController [handleRequest $resStatus]: ' . print_r($resStatus, true));
 
         return new Response(
             json_encode($resBody),
