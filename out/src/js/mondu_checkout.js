@@ -113,11 +113,13 @@ class MonduCheckout {
     }
 }
 
-window.onload = function () {
+function monduStart() {
     if (!widgetUrl) {
         var widgetUrl = 'http://localhost:3002/widget.js';
     }
 
     var mondu = new MonduCheckout();
     mondu.init();
-};
+}
+
+document.addEventListener('DOMContentLoaded', monduStart);
