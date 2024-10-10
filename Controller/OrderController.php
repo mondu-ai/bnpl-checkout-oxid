@@ -16,6 +16,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class OrderController extends OrderController_parent
 {
+    const EE_EDITION_CODE = 'EE';
+
     private MonduClient $_client;
     private User|null|false $_oUser;
     private LoggerInterface $_logger;
@@ -65,6 +67,11 @@ class OrderController extends OrderController_parent
             if (isset($response['state']) && $response['state'] == 'confirmed') {
                 try {
                     $iSuccess = $this->monduExecute($oBasket);
+                    $edition = oxRegistry::getConfig()->getEdition();
+
+                    if ($edition === self::EE_EDITION_CODE && $iSuccess == 1) {
+                        return oxRegistry::getUtils()->redirect(oxRegistry::getConfig()->getShopHomeURL() . 'index.php?cl=success', false);
+                    }
 
                     return $this->_getNextStep($iSuccess);
                 } catch (Exception $e) {
