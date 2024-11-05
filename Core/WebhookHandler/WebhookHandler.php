@@ -20,6 +20,9 @@ class WebhookHandler
     public function handleWebhook($params)
     {
         $this->_logger->debug('MonduWebhookHandler [handleWebhook]: ' . print_r($params, true));
+        $logger = \OxidEsales\Eshop\Core\Registry::getLogger();
+        $logger->debug('MonduWebhooksController [WebhooksSecret]: ' . print_r($params, true));
+
         switch ($params['topic']) {
             case 'order/confirmed':
             case 'order/authorized':
@@ -47,6 +50,24 @@ class WebhookHandler
         }
 
         return [['error' => 'Order not found'], Response::HTTP_BAD_REQUEST];
+    }
+
+    public function getWebhookSecretByShopId($shopId)
+    {
+        return Registry::getConfig()->getShopConfVar(
+            'oemonduWebhookSecret',
+            $shopId,
+            'module:oemondu'
+        );
+    }
+
+    public function getShopId($params)
+    {
+        $monduOrder = $this->getOrder($params['order_uuid']);
+        $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $order->load($monduOrder->getFieldData('oemondu_orders__oxid_order_id'));
+
+        return $order->oxorder__oxshopid->value;
     }
 
     public function handleInvoiceStateChanged($params, $state)

@@ -58,9 +58,9 @@ class SettingChangedSubscriber extends AbstractShopAwareEventSubscriber
             if ($response['status'] === 409) return;
 
             if (!$response['webhook']) {
-                $errorMessage = $response['status'] === 403 ? 'INVALID_API_KEY' : 'MONDU_REGISTER_WEBHOOK_ERROR';
-
-                return MonduHelper::showErrorMessage($errorMessage);
+                if ($response['status'] === 403) {
+                    return MonduHelper::showErrorMessage('INVALID_API_KEY');
+                }
             }
         }
     }

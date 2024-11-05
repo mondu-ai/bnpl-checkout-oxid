@@ -16,8 +16,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class OrderController extends OrderController_parent
 {
-    const EE_EDITION_CODE = 'EE';
-
     private MonduClient $_client;
     private User|null|false $_oUser;
     private LoggerInterface $_logger;
@@ -64,16 +62,12 @@ class OrderController extends OrderController_parent
             }
             $response = $this->_client->confirmOrder($orderUuid, $data);
             $this->_logger->debug('MonduOrderController [execute $response]: ' . print_r($response, true));
-            if (isset($response['state']) && $response['state'] == 'confirmed') {
+
+            if (isset($response['state']) && ($response['state'] == 'confirmed' || $response['state'] == 'pending')) {
                 try {
-                    $iSuccess = $this->monduExecute($oBasket);
-                    $edition = oxRegistry::getConfig()->getEdition();
+                    $iSuccess = $this->monduExecute($oBasket, $response['state'] == 'pending');
 
-                    if ($edition === self::EE_EDITION_CODE && $iSuccess == 1) {
-                        return oxRegistry::getUtils()->redirect(oxRegistry::getConfig()->getShopHomeURL() . 'index.php?cl=success', false);
-                    }
-
-                    return $this->_getNextStep($iSuccess);
+                    return $this->getNextStep($iSuccess);
                 } catch (Exception $e) {
                     throw new \Exception('Mondu: Error during the order process');
                 }
@@ -92,10 +86,10 @@ class OrderController extends OrderController_parent
      * Save order to database, delete order_id from session and redirect to thank you page
      *
      * @param Basket $oBasket
-     *
+     * @param bool   $isPending
      * @return bool|int|mixed
      */
-    protected function monduExecute(Basket $oBasket)
+    protected function monduExecute(Basket $oBasket, bool $isPending)
     {
         if (!Registry::getSession()->getVariable('sess_challenge')) {
             Registry::getSession()->setVariable('sess_challenge', Registry::getUtilsObject()->generateUID());
@@ -106,7 +100,7 @@ class OrderController extends OrderController_parent
         $oOrder = oxNew(Order::class);
 
         try {
-            $iSuccess = $oOrder->finalizeOrder($oBasket, $oBasket->getUser());
+            $iSuccess = $oOrder->finalizeOrder($oBasket, $oBasket->getUser(), false, $isPending);
         } catch (StandardException $e) {
             Registry::get(UtilsView::class)->addErrorToDisplay($e);
         }

@@ -46,7 +46,7 @@ class MonduOrder extends BaseModel
             'oemondu_orders__oxid_order_id'  => $this->_oOxidOrder->getId(),
             'oemondu_orders__order_uuid'  => $order['uuid'],
             'oemondu_orders__order_state'  => $order['state'],
-            'oemondu_orders__authorized_net_term' => $order['authorized_net_term']
+            'oemondu_orders__authorized_net_term' => $order['authorized_net_term'],
         );
     }
 }

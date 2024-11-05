@@ -10,7 +10,7 @@ $aModule = array(
         'en' => 'Module for Mondu payment.',
     ),
     'thumbnail'    => 'out/src/images/logo.png',
-    'version'      => '1.1.8',
+    'version'      => '1.1.6',
     'author'       => 'Mondu GmbH',
     'url'          => 'https://www.mondu.ai',
     'email'        => 'contact@mondu.ai',

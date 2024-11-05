@@ -61,14 +61,15 @@ class Config
         return oxNew(\OxidEsales\EshopCommunity\Core\ShopVersion::class)->getVersion();
     }
 
-    public function getWebhooksSecret()
+    public function getWebhooksSecret($shopId = null)
     {
-        return $this->getParameter('oemonduWebhookSecret');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getShopConfVar('oemonduWebhookSecret', $shopId, 'module:oemondu');
+        //return $this->getParameter('oemonduWebhookSecret');
     }
 
-    public function setWebhooksSecret($webhookSecret)
+    public function setWebhooksSecret($webhookSecret, $shopId)
     {
-        $this->setParameter('oemonduWebhookSecret', $webhookSecret);
+        $this->setParameter('oemonduWebhookSecret', $webhookSecret, $shopId);
     }
 
     public function getIsMerchantIdentified()
@@ -107,13 +108,14 @@ class Config
         return $this->getConfig()->getConfigParam($paramName);
     }
 
-    protected function setParameter($paramName, $paramValue)
+    protected function setParameter($paramName, $paramValue, $shopId = null)
     {
         $moduleSettingBridge = ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(ModuleSettingBridgeInterface::class);
+                                               ->getContainer()
+                                               ->get(ModuleSettingBridgeInterface::class);
 
         $moduleSettingBridge->save($paramName, $paramValue, 'oemondu');
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', $paramName, $paramValue, $shopId, 'module:oemondu');
     }
 
     protected function getConfig()
