@@ -2,11 +2,13 @@
 
 namespace OxidEsales\MonduPayment\Core\WebhookHandler;
 
+use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\MonduPayment\Model\MonduInvoice;
 use OxidEsales\MonduPayment\Model\MonduOrder;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 
 class WebhookHandler
 {
@@ -19,7 +21,6 @@ class WebhookHandler
 
     public function handleWebhook($params)
     {
-        $this->_logger->debug('MonduWebhookHandler [handleWebhook]: ' . print_r($params, true));
         $logger = \OxidEsales\Eshop\Core\Registry::getLogger();
         $logger->debug('MonduWebhooksController [WebhooksSecret]: ' . print_r($params, true));
 
@@ -45,6 +46,24 @@ class WebhookHandler
         $monduOrder = $this->getOrder($params['order_uuid']);
 
         if ($monduOrder) {
+            if (
+                stripos($params['topic'], 'confirmed') !== false ||
+                stripos($params['topic'], 'authorized') !== false
+            ) {
+                $order = oxNew(Order::class);
+                $order->load($monduOrder->getFieldData('oemondu_orders__oxid_order_id'));
+
+                $sQuery = "
+                    UPDATE 
+                        oxorder 
+                    SET 
+                        oxfolder = 'ORDERFOLDER_NEW', 
+                        oxtransstatus = 'OK'
+                    WHERE 
+                        OXORDERNR = '{$order->getFieldData('oxorder__oxordernr')}'
+";
+                DatabaseProvider::getDb()->execute($sQuery);
+            }
             $monduOrder->updateOrderState($params['order_state']);
             return [['order' => $monduOrder], Response::HTTP_OK];
         }
@@ -64,7 +83,7 @@ class WebhookHandler
     public function getShopId($params)
     {
         $monduOrder = $this->getOrder($params['order_uuid']);
-        $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $order = oxNew(Order::class);
         $order->load($monduOrder->getFieldData('oemondu_orders__oxid_order_id'));
 
         return $order->oxorder__oxshopid->value;

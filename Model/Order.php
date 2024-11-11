@@ -51,9 +51,9 @@ class Order extends Order_parent
             $oMonduInvoices->init(MonduInvoice::class);
             $oMonduInvoices->selectString(
                 $sQuery, [
-                           ':oxorderid' => $this->getId(),
-                           ':oxordernr' => $this->getFieldData('oxorder__oxordernr')
-                       ]
+                    ':oxorderid' => $this->getId(),
+                    ':oxordernr' => $this->getFieldData('oxorder__oxordernr')
+                ]
             );
 
             return $oMonduInvoices;
@@ -100,9 +100,9 @@ class Order extends Order_parent
      */
     public function finalizeOrder(
         \OxidEsales\Eshop\Application\Model\Basket $oBasket,
-                                                   $oUser,
-                                                   $blRecalculatingOrder = false,
-                                                   $isPending = false
+        $oUser,
+        $blRecalculatingOrder = false,
+        $isPending = false
     ) {
         $result = parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
 
@@ -124,6 +124,7 @@ class Order extends Order_parent
             );
 
             if ($isPending) {
+
                 $this->oxorder__oxfolder = new \OxidEsales\Eshop\Core\Field('ORDERFOLDER_PROBLEMS');
                 $this->oxorder__oxtransstatus = new \OxidEsales\Eshop\Core\Field('PENDING');
 

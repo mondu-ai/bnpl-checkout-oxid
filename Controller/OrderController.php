@@ -64,8 +64,10 @@ class OrderController extends OrderController_parent
             $this->_logger->debug('MonduOrderController [execute $response]: ' . print_r($response, true));
 
             if (isset($response['state']) && ($response['state'] == 'confirmed' || $response['state'] == 'pending')) {
+                $isPending = $response['state'] == 'pending';
+
                 try {
-                    $iSuccess = $this->monduExecute($oBasket, $response['state'] == 'pending');
+                    $iSuccess = $this->monduExecute($oBasket, $isPending);
 
                     return $this->getNextStep($iSuccess);
                 } catch (Exception $e) {

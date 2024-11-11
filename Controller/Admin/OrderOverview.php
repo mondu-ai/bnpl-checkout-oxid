@@ -31,6 +31,16 @@ class OrderOverview extends OrderOverview_parent
 
     public function sendorder()
     {
+        $oOrder = $this->getOrder();
+        
+        if (stripos($oOrder->oxorder__oxtransstatus->value, 'pending') !== false) {
+            return MonduHelper::showErrorMessage('MONDU_SENDING_PENDING_ORDER_ERROR');
+        }
+
+        if ($this->isMonduPayment() && !$this->_monduShippingProcessor->shipMonduOrder()) {
+            return MonduHelper::showErrorMessage('MONDU_CREATE_INVOICE_ERROR');
+        }
+
         if ($this->isMonduPayment() && !$this->_monduShippingProcessor->shipMonduOrder()) {
             return MonduHelper::showErrorMessage('MONDU_CREATE_INVOICE_ERROR');
         }

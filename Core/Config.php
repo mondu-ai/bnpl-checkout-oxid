@@ -111,8 +111,8 @@ class Config
     protected function setParameter($paramName, $paramValue, $shopId = null)
     {
         $moduleSettingBridge = ContainerFactory::getInstance()
-                                               ->getContainer()
-                                               ->get(ModuleSettingBridgeInterface::class);
+            ->getContainer()
+            ->get(ModuleSettingBridgeInterface::class);
 
         $moduleSettingBridge->save($paramName, $paramValue, 'oemondu');
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', $paramName, $paramValue, $shopId, 'module:oemondu');
