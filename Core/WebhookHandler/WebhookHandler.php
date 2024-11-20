@@ -61,7 +61,21 @@ class WebhookHandler
                         oxtransstatus = 'OK'
                     WHERE 
                         OXORDERNR = '{$order->getFieldData('oxorder__oxordernr')}'
-";
+                ";
+                DatabaseProvider::getDb()->execute($sQuery);
+            } else if (stripos($params['topic'], 'declined') !== false) {
+                $order = oxNew(Order::class);
+                $order->load($monduOrder->getFieldData('oemondu_orders__oxid_order_id'));
+
+                $sQuery = "
+                    UPDATE 
+                        oxorder 
+                    SET 
+                        oxfolder = 'ORDERFOLDER_PROBLEMS', 
+                        oxtransstatus = 'CANCELLED'
+                    WHERE 
+                        OXORDERNR = '{$order->getFieldData('oxorder__oxordernr')}'
+                ";
                 DatabaseProvider::getDb()->execute($sQuery);
             }
             $monduOrder->updateOrderState($params['order_state']);
