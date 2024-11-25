@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OxidEsales\MonduPayment\Core\WebhookHandler\WebhookHandler;
 use OxidEsales\MonduPayment\Core\Config;
+use OxidEsales\MonduPayment\Model\MonduOrder;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\MonduPayment\Core\Utils\MonduHelper;
 
 class MonduWebhooksController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -37,15 +40,23 @@ class MonduWebhooksController extends \OxidEsales\Eshop\Application\Controller\F
     {
         $content = $request->getContent();
         $headers = $request->headers;
+        $params = json_decode($content, true);
+        $signatureIsValid = false;
+        $shopId = $this->_webhookHandler->getShopId($params);
+        $shopIds = $shopId ? [['OXID' => $shopId]] : MonduHelper::getAllShopIds();
 
-        $signature = hash_hmac('sha256', $content, $this->_config->getWebhooksSecret());
-        if ($signature !== $headers->get('X-Mondu-Signature')) {
-            $this->_logger->debug('MonduWebhooksController [WebhooksSecret]: ' . print_r($this->_config->getWebhooksSecret(), true));
-            $this->_logger->debug('MonduWebhooksController [Content]: ' . print_r($content, true));
-            $this->_logger->debug('MonduWebhooksController [X-Mondu-Signature]: ' . print_r($headers->get('X-Mondu-Signature'), true));
-            $this->_logger->debug('MonduWebhooksController [Signature]: ' . print_r($signature, true));
+        foreach ($shopIds as $shopId) {
+            if (isset($shopId['OXID'])) {
+                $signature = hash_hmac('sha256', $content, $this->_webhookHandler->getWebhookSecretByShopId($shopId['OXID']));
+                if ($signature === $headers->get('X-Mondu-Signature')) {
+                    $signatureIsValid = true;
+                    break;
+                }
+            }
+        }
 
-            return new Response('Invalid signature', 401);
+        if (!$signatureIsValid) {
+            return new Response($logData, 401);
         }
 
         $params = json_decode($content, true);

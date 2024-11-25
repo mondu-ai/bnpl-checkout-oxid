@@ -20,7 +20,6 @@ class Order extends Order_parent
      */
     private LoggerInterface $_logger;
 
-
     public function __construct()
     {
         parent::__construct();
@@ -99,8 +98,12 @@ class Order extends Order_parent
      *
      * @return integer
      */
-    public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
-    {
+    public function finalizeOrder(
+        \OxidEsales\Eshop\Application\Model\Basket $oBasket,
+        $oUser,
+        $blRecalculatingOrder = false,
+        $isPending = false
+    ) {
         $result = parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
 
         $this->_logger->debug('MonduOrder [finalizeOrder $result]: ' . print_r($result, true));
@@ -119,6 +122,19 @@ class Order extends Order_parent
                 $monduOrderUuid,
                 ['external_reference_id' => (string) $this->getFieldData('oxorder__oxordernr')]
             );
+
+            if ($isPending) {
+
+                $this->oxorder__oxfolder = new \OxidEsales\Eshop\Core\Field('ORDERFOLDER_PROBLEMS');
+                $this->oxorder__oxtransstatus = new \OxidEsales\Eshop\Core\Field('PENDING');
+
+                $monduOrder = $this->getOrder($monduOrderUuid);
+
+                if ($monduOrder) {
+                    $monduOrder->updateOrderState($params['order_state']);
+                }
+                $this->save();
+            }
         }
 
         if ($this->isMonduPayment() && !$this->getMonduOrders()) {
@@ -126,5 +142,12 @@ class Order extends Order_parent
         }
 
         return $result;
+    }
+
+    private function getOrder($orderUuid)
+    {
+        $monduOrder = oxNew(MonduOrder::class);
+        $monduOrder->loadByOrderUuid($orderUuid);
+        return $monduOrder;
     }
 }

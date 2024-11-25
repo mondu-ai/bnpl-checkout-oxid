@@ -91,13 +91,19 @@ class MonduClient
     public function getWebhooksSecret()
     {
         $response = $this->sendRequest('GET', 'webhooks/keys');
-        $this->_config->setWebhooksSecret($response['webhook_secret'] ?? '');
+        $this->_config->setWebhooksSecret($response['webhook_secret'] ?? '', \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
         return $response['webhook_secret'];
     }
 
     public function registerWebhook($webhookParams)
     {
         $response = $this->sendRequest('POST', 'webhooks/', $webhookParams);
+        return $response;
+    }
+
+    public function deleteWebhook($webhookParams)
+    {
+        $response = $this->sendRequest('DELETE', 'webhooks/uuid');
         return $response;
     }
 

@@ -5,6 +5,7 @@ namespace OxidEsales\MonduPayment\Core\Utils;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 class MonduHelper
 {
@@ -76,5 +77,17 @@ class MonduHelper
             $oldOrder->getFieldData('oxorder__oxdelcost') != $newOrder->getFieldData('oxorder__oxdelcost') ||
             $oldOrder->getFieldData('oxorder__oxdiscount') != $newOrder->getFieldData('oxorder__oxdiscount') ||
             !self::ordersHaveSameArticles($oldOrder, $newOrder);
+    }
+
+    public static function getAllShopIds()
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $queryBuilderFactory = $container->get(QueryBuilderFactoryInterface::class);
+
+        $queryBuilder = $queryBuilderFactory->create();
+        $queryBuilder->select('OXID')
+                     ->from('oxshops');
+
+        return $queryBuilder->execute()->fetchAllAssociative();
     }
 }
