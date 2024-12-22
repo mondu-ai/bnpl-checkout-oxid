@@ -5,6 +5,9 @@ namespace OxidEsales\MonduPayment\Controller;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
@@ -39,7 +42,7 @@ class OrderController extends OrderController_parent
 
     public function getPaymentPageUrl()
     {
-        $shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopSecureHomeURL();
+        $shopUrl = Registry::getConfig()->getShopSecureHomeURL();
         return $shopUrl . '&cl=payment&payerror=2';
     }
 
@@ -56,23 +59,13 @@ class OrderController extends OrderController_parent
             }
 
             $oBasket = $this->getBasket();
-            $data = [];
-            if ($oBasket->getOrderId()) {
-                $data['external_reference_id'] = $oBasket->getOrderId();
-            }
-            $response = $this->_client->confirmOrder($orderUuid, $data);
-            $this->_logger->debug('MonduOrderController [execute $response]: ' . print_r($response, true));
 
-            if (isset($response['state']) && ($response['state'] == 'confirmed' || $response['state'] == 'pending')) {
-                $isPending = $response['state'] == 'pending';
+            try {
+                $iSuccess = $this->monduExecute($oBasket, $orderUuid);
 
-                try {
-                    $iSuccess = $this->monduExecute($oBasket, $isPending);
-
-                    return $this->getNextStep($iSuccess);
-                } catch (Exception $e) {
-                    throw new \Exception('Mondu: Error during the order process');
-                }
+                return $this->_getNextStep($iSuccess);
+            } catch (Exception $e) {
+                throw new \Exception('Mondu: Error during the order process');
             }
         }
 
@@ -88,10 +81,12 @@ class OrderController extends OrderController_parent
      * Save order to database, delete order_id from session and redirect to thank you page
      *
      * @param Basket $oBasket
-     * @param bool   $isPending
-     * @return bool|int|mixed
+     * @param        $orderUuid
+     * @return string
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
      */
-    protected function monduExecute(Basket $oBasket, bool $isPending)
+    protected function monduExecute(Basket $oBasket, $orderUuid)
     {
         if (!Registry::getSession()->getVariable('sess_challenge')) {
             Registry::getSession()->setVariable('sess_challenge', Registry::getUtilsObject()->generateUID());
@@ -102,7 +97,7 @@ class OrderController extends OrderController_parent
         $oOrder = oxNew(Order::class);
 
         try {
-            $iSuccess = $oOrder->finalizeOrder($oBasket, $oBasket->getUser(), false, $isPending);
+            $iSuccess = $oOrder->finalizeOrder($oBasket, $oBasket->getUser(), false);
         } catch (StandardException $e) {
             Registry::get(UtilsView::class)->addErrorToDisplay($e);
         }
@@ -112,6 +107,51 @@ class OrderController extends OrderController_parent
             $this->_oUser->onOrderExecute($oBasket, $iSuccess);
         }
 
+        $this->confirmOrder($oBasket, $orderUuid);
+
         return $iSuccess;
+    }
+
+    /**
+     * @param $oBasket
+     * @param $orderUuid
+     * @return void
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    protected function confirmOrder($oBasket, $orderUuid)
+    {
+        if (!$oBasket->getOrderId()) {
+            return;
+        }
+
+        $data = [];
+        $order = oxNew(Order::class);
+        $order->load($oBasket->getOrderId());
+        $data['external_reference_id'] = $order->getFieldData('oxorder__oxordernr');
+
+        $response = $this->_client->confirmOrder($orderUuid, $data);
+        $this->_logger->debug('MonduOrderController [execute $response]: ' . print_r($response, true));
+
+        if (isset($response['state']) && ($response['state'] == 'confirmed' || $response['state'] == 'pending')) {
+            $isPending = $response['state'] == 'pending';
+
+            if ($isPending) {
+                $sQuery = "
+                    UPDATE 
+                        oxorder
+                    SET 
+                        oxfolder = 'ORDERFOLDER_PROBLEMS', 
+                        oxtransstatus = 'PENDING'
+                    WHERE 
+                        OXORDERNR = '{$order->getFieldData('oxorder__oxordernr')}'
+                ";
+                DatabaseProvider::getDb()->execute($sQuery);
+            }
+
+            $this->_logger->debug(
+                'MonduOrderController [execute $response]: ' . print_r($response, true)
+            );
+        }
     }
 }
